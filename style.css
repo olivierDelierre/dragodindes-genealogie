@@ -36,6 +36,24 @@
     --edge-dim: rgba(240, 225, 200, .07);
   }
 }
+:root[data-theme="dark"] {
+  --bg: #17140f;
+  --panel: #221e17;
+  --panel-2: #2c271e;
+  --border: #3e372a;
+  --text: #efe8da;
+  --muted: #a79c86;
+  --accent: #e3a04a;
+  --p1: #6aa2ff;
+  --p1-soft: #1c2a44;
+  --p2: #ff8a4c;
+  --p2-soft: #43261a;
+  --ch: #5fd08e;
+  --ch-soft: #183425;
+  --owned: #5fd08e;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 4px 14px rgba(0,0,0,.25);
+  --edge-dim: rgba(240, 225, 200, .07);
+}
 
 * { box-sizing: border-box; }
 html, body { height: 100%; }
@@ -59,6 +77,7 @@ button:hover, .btn:hover { border-color: var(--accent); }
 .brand img { width: 40px; height: 40px; object-fit: contain; }
 .brand h1 { font-size: 18px; margin: 0; }
 .brand p { margin: 0; color: var(--muted); font-size: 12px; }
+.theme { font-size: 15px; padding: 5px 9px; }
 .dir { margin-left: auto; font-size: 13px; white-space: nowrap; }
 .tabs { display: flex; gap: 4px; background: var(--panel-2); padding: 3px; border-radius: 10px; }
 .tabs button { border: 0; background: transparent; border-radius: 8px; }
@@ -190,7 +209,7 @@ body:not([data-view="plan"]) .plan { display: none; }
 .card img { width: 48px; height: 48px; object-fit: contain; flex-shrink: 0; }
 .card .info { min-width: 0; flex: 1; }
 .card .name { font-weight: 600; font-size: 13px; line-height: 1.2; }
-.card .meta { display: flex; gap: 6px; align-items: center; margin-top: 3px; font-size: 11px; color: var(--muted); }
+.card .meta { white-space: nowrap; display: flex; gap: 6px; align-items: center; margin-top: 3px; font-size: 11px; color: var(--muted); }
 .card .role { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
 .card.root { border-left-color: var(--accent); border-width: 2px 2px 2px 5px; }
 .canvas:not(.ov) .card { padding-left: 16px; }

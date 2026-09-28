@@ -20,7 +20,7 @@
   // ---------- Stockage local ----------
   const STORE_KEY = 'dragodindes-genealogie-v1';
   const state = Object.assign(
-    { selected: 'prune-et-emeraude', view: 'tree', depth: 3, zoom: 1, owned: [], onlyOwned: false, planQty: 1, planDone: {}, fwd: true },
+    { selected: 'prune-et-emeraude', view: 'tree', depth: 3, zoom: 1, owned: [], onlyOwned: false, planQty: 1, planDone: {}, fwd: true, theme: null },
     load()
   );
   const owned = new Set(state.owned);
@@ -432,6 +432,21 @@
     d.checked ? (t[d.dataset.done] = true) : delete t[d.dataset.done];
     save(); renderPlan();
   });
+
+  // ---------- Thème clair / sombre ----------
+  // Tant que l'utilisatrice n'a pas choisi, on suit le thème du système.
+  const systemDark = matchMedia('(prefers-color-scheme: dark)');
+  const isDark = () => state.theme ? state.theme === 'dark' : systemDark.matches;
+  function applyTheme() {
+    if (state.theme) document.documentElement.dataset.theme = state.theme;
+    else delete document.documentElement.dataset.theme;
+    const b = $('#themeBtn');
+    b.textContent = isDark() ? '☀️' : '🌙';
+    b.title = isDark() ? 'Passer en thème clair' : 'Passer en thème sombre';
+  }
+  $('#themeBtn').addEventListener('click', () => { state.theme = isDark() ? 'light' : 'dark'; save(); applyTheme(); });
+  systemDark.addEventListener('change', applyTheme);
+  applyTheme();
 
   // ---------- Sens de lecture ----------
   $('#dirBtn').addEventListener('click', () => {
