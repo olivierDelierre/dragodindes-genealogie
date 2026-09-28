@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Généalogie Dragodindes</title>
+<link rel="icon" href="images/amande.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <img src="images/doree.png" alt="">
+    <div>
+      <h1>Généalogie des Dragodindes</h1>
+      <p>66 montures · 10 générations · données <a href="https://dofuselevage.fr/tools/reproduction/dragodinde/genealogie" target="_blank" rel="noopener">DofusElevage</a></p>
+    </div>
+  </div>
+  <button id="dirBtn" class="dir" title="Inverser le sens de lecture dans toute l'application"></button>
+  <nav class="tabs" role="tablist">
+    <button role="tab" data-view="tree" class="active">Arbre d'ascendance</button>
+    <button role="tab" data-view="overview">Vue d'ensemble</button>
+    <button role="tab" data-view="plan">Liste de courses</button>
+  </nav>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <input id="search" type="search" placeholder="Rechercher une dragodinde…" autocomplete="off">
+    <label class="chk"><input type="checkbox" id="onlyOwned"> Seulement celles que je possède</label>
+    <div id="list" class="list"></div>
+    <div class="storage">
+      <span id="ownedCount"></span>
+      <button id="exportBtn" title="Télécharger mes montures possédées (JSON)">Exporter</button>
+      <label class="btn" title="Importer un fichier JSON exporté">Importer<input type="file" id="importFile" accept="application/json" hidden></label>
+    </div>
+  </aside>
+
+  <main class="main">
+    <section id="detail" class="detail"></section>
+
+    <div class="toolbar">
+      <div class="legend">
+        <span><i class="sw p1"></i>Parent 1</span>
+        <span><i class="sw p2"></i>Parent 2</span>
+        <span class="ov-only"><i class="sw ch"></i>Enfants</span>
+      </div>
+      <div class="tree-only ctrls">
+        <label>Profondeur
+          <select id="depth">
+            <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+            <option value="4">4</option><option value="99">Tout</option>
+          </select>
+        </label>
+      </div>
+      <div class="ctrls">
+        <button id="zoomOut" aria-label="Dézoomer">−</button>
+        <span id="zoomVal">100%</span>
+        <button id="zoomIn" aria-label="Zoomer">+</button>
+        <button id="zoomFit">Ajuster</button>
+      </div>
+    </div>
+
+    <div id="viewport" class="viewport">
+      <div id="canvas" class="canvas"></div>
+    </div>
+
+    <section id="plan" class="plan"></section>
+  </main>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
