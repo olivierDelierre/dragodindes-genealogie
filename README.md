@@ -14,3 +14,9 @@ L'onglet « Liste de courses » calcule, pour la monture sélectionnée et une q
 capturer et les accouplements à faire génération par génération. Hypothèse : un accouplement consomme
 un exemplaire de chaque parent et donne un bébé de la monture visée ; une monture cochée « possédée »
 compte pour un exemplaire. Les étapes cochées sont mémorisées par objectif.
+
+## Mobile
+
+Sous 760 px de large, la liste des montures devient un tiroir (bouton « ☰ Montures »), l'en-tête est
+compacté et les onglets sont raccourcis. Dans l'arbre et la vue d'ensemble : glisser pour se déplacer,
+pincer à deux doigts pour zoomer.

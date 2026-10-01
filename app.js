@@ -23,6 +23,9 @@
     { selected: 'prune-et-emeraude', view: 'tree', depth: 3, zoom: 1, owned: [], onlyOwned: false, planQty: 1, planDone: {}, fwd: true, theme: null },
     load()
   );
+  const mobileMQ = matchMedia('(max-width: 760px)');
+  // Sur petit écran, on démarre un peu dézoomé tant que l'utilisatrice n'a pas choisi de zoom.
+  if (load().zoom === undefined && mobileMQ.matches) state.zoom = 0.8;
   const owned = new Set(state.owned);
   function load() {
     try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch { return {}; }
@@ -67,7 +70,7 @@
     const own = e.target.closest('[data-own]');
     if (own) { toggleOwned(own.dataset.own, own.checked); return; }
     const it = e.target.closest('.item');
-    if (it) select(it.dataset.id, true);
+    if (it) { select(it.dataset.id, true); setMenu(false); }
   });
   $('#search').addEventListener('input', renderList);
   $('#onlyOwned').checked = state.onlyOwned;
@@ -448,6 +451,41 @@
   systemDark.addEventListener('change', applyTheme);
   applyTheme();
 
+  // ---------- Tiroir des montures (mobile) ----------
+  function setMenu(open) {
+    document.body.classList.toggle('menu-open', open);
+    $('#menuBtn').setAttribute('aria-expanded', open);
+  }
+  $('#menuBtn').addEventListener('click', () => {
+    setMenu(true);
+    listEl.querySelector('.item.sel')?.scrollIntoView({ block: 'center' });
+  });
+  $('#closeMenu').addEventListener('click', () => setMenu(false));
+  $('#backdrop').addEventListener('click', () => setMenu(false));
+  window.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
+  mobileMQ.addEventListener('change', () => setMenu(false));
+
+  // ---------- Pincer pour zoomer (tactile) ----------
+  let pinch = null;
+  const dist = t => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+  viewport.addEventListener('touchstart', e => {
+    if (e.touches.length !== 2) { pinch = null; return; }
+    const r = viewport.getBoundingClientRect();
+    const mx = (e.touches[0].clientX + e.touches[1].clientX) / 2 - r.left;
+    const my = (e.touches[0].clientY + e.touches[1].clientY) / 2 - r.top;
+    pinch = { d: dist(e.touches), z: state.zoom, mx, my,
+      cx: (viewport.scrollLeft + mx) / state.zoom, cy: (viewport.scrollTop + my) / state.zoom };
+  }, { passive: true });
+  viewport.addEventListener('touchmove', e => {
+    if (!pinch || e.touches.length !== 2) return;
+    e.preventDefault();
+    setZoom(pinch.z * dist(e.touches) / pinch.d);
+    // garde le point entre les doigts à la même place à l'écran
+    viewport.scrollLeft = pinch.cx * state.zoom - pinch.mx;
+    viewport.scrollTop = pinch.cy * state.zoom - pinch.my;
+  }, { passive: false });
+  viewport.addEventListener('touchend', () => { pinch = null; });
+
   // ---------- Sens de lecture ----------
   $('#dirBtn').addEventListener('click', () => {
     state.fwd = !fwd(); save(); renderAll(true); centerOverview('auto');
@@ -466,7 +504,7 @@
   function renderAll(resetScroll) {
     document.body.dataset.view = state.view;
     document.body.classList.toggle('rev', !fwd());
-    $('#dirBtn').textContent = fwd() ? 'Sens : Parents → Enfant' : 'Sens : Enfant ← Parents';
+    $('#dirBtn').innerHTML = `<span class="lg">Sens : </span>${fwd() ? 'Parents → Enfant' : 'Enfant ← Parents'}`;
     document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('active', b.dataset.view === state.view));
     renderList(); renderDetail(); renderCanvas();
     if (resetScroll) {

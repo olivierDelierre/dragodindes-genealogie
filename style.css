@@ -57,10 +57,11 @@
 
 * { box-sizing: border-box; }
 html, body { height: 100%; }
+html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0; background: var(--bg); color: var(--text);
   font: 14px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  display: flex; flex-direction: column;
+  display: flex; flex-direction: column; height: 100dvh; overflow: hidden;
 }
 a { color: var(--accent); }
 button, select, .btn {
@@ -111,7 +112,7 @@ button:hover, .btn:hover { border-color: var(--accent); }
 .storage span { flex: 1; }
 .storage button, .storage .btn { font-size: 12px; padding: 3px 8px; }
 
-.main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.main { flex: 1; display: flex; flex-direction: column; min-width: 0; min-height: 0; }
 
 .detail {
   display: flex; gap: 16px; align-items: center; flex-wrap: wrap;
@@ -161,7 +162,7 @@ body[data-view="tree"] .ov-only, body[data-view="overview"] .tree-only { display
 body[data-view="plan"] .toolbar, body[data-view="plan"] .viewport { display: none; }
 body:not([data-view="plan"]) .plan { display: none; }
 
-.viewport { flex: 1; overflow: auto; position: relative; cursor: grab; }
+.viewport { flex: 1; min-height: 0; overflow: auto; touch-action: pan-x pan-y; overscroll-behavior: contain; position: relative; cursor: grab; }
 .viewport.drag { cursor: grabbing; user-select: none; }
 .canvas { position: relative; margin: 24px; }
 .canvas svg { position: absolute; inset: 0; overflow: visible; pointer-events: none; }
@@ -239,8 +240,87 @@ body.rev .card .tog { left: auto; right: -13px; }
 .canvas.ov .card.p2 { border: 2px solid var(--p2); }
 .canvas.ov .card.ch { border: 2px solid var(--ch); }
 
+/* Éléments réservés au mobile (cachés sur grand écran) */
+.menu, .close-menu, .backdrop, .tabs .sm { display: none; }
+
+/* ---------- Mobile / petit écran ---------- */
 @media (max-width: 760px) {
-  .layout { flex-direction: column; }
-  .sidebar { width: auto; max-height: 38vh; border-right: 0; border-bottom: 1px solid var(--border); }
-  .viewport { min-height: 60vh; }
+  body { font-size: 15px; }
+
+  .topbar {
+    gap: 8px; padding: 8px 10px; padding-top: max(8px, env(safe-area-inset-top));
+    padding-left: max(10px, env(safe-area-inset-left)); padding-right: max(10px, env(safe-area-inset-right));
+  }
+  .brand { flex-basis: 100%; gap: 8px; }
+  .brand img { width: 30px; height: 30px; }
+  .brand h1 { font-size: 16px; }
+  .brand p { display: none; }
+  .brand { align-items: center; }
+  .menu { display: block; flex: 1; text-align: left; font-weight: 600; }
+  .dir { margin-left: 0; }
+  .dir .lg { display: none; }
+  .dir, .theme, .menu { padding: 7px 10px; }
+  .tabs { flex-basis: 100%; }
+  .tabs button { flex: 1; padding: 7px 4px; font-size: 13px; }
+  .tabs .lg { display: none; }
+  .tabs .sm { display: inline; }
+
+  /* La liste des montures devient un tiroir */
+  .layout { position: relative; }
+  .sidebar {
+    position: fixed; z-index: 50; top: 0; bottom: 0; left: 0; width: min(86vw, 330px);
+    padding-top: max(12px, env(safe-area-inset-top)); padding-bottom: max(12px, env(safe-area-inset-bottom));
+    border-right: 1px solid var(--border); box-shadow: var(--shadow);
+    transform: translateX(-105%); transition: transform .2s ease; visibility: hidden;
+  }
+  body.menu-open .sidebar { transform: none; visibility: visible; }
+  .backdrop { position: fixed; z-index: 40; inset: 0; background: rgba(0, 0, 0, .5); }
+  body.menu-open .backdrop { display: block; }
+  .close-menu { display: block; align-self: flex-end; }
+  #search { font-size: 16px; padding: 10px; }
+  .item { padding: 7px 6px; }
+  .item input, .chk input { width: 20px; height: 20px; }
+
+  /* Fiche de la monture, compacte */
+  .detail { gap: 6px; padding: 6px 10px; max-height: 34vh; overflow-y: auto; flex-shrink: 0; }
+  .detail .hero { min-width: 0; gap: 8px; flex: 1 1 100%; }
+  .detail .hero img { width: 44px; height: 44px; }
+  .detail h2 { font-size: 17px; }
+  .recipe { gap: 4px; flex-wrap: nowrap; }
+  .detail .pill .role { display: none; } /* la couleur bleu/orange + la légende suffisent ici */
+  .pill { font-size: 12px; padding: 2px 8px 2px 3px; }
+  .pill img { width: 22px; height: 22px; }
+
+  body[data-view="plan"] .detail { display: none; } /* l'objectif est déjà rappelé dans la liste */
+  .toolbar { gap: 4px 10px; padding: 4px 10px; }
+  .legend { gap: 8px; font-size: 11px; }
+  .legend .sw { width: 14px; }
+  .ctrls { gap: 4px; }
+  .ctrls button, .ctrls select, #depth { min-height: 34px; }
+  .ctrls button { min-width: 36px; }
+
+  .card .tog { width: 32px; height: 32px; font-size: 18px; }
+  .card .tog { left: -17px; }
+  body.rev .card .tog { left: auto; right: -17px; }
+
+  /* Liste de courses */
+  .plan { padding: 10px; padding-bottom: max(10px, env(safe-area-inset-bottom)); }
+  .plan-head { padding: 10px; }
+  .goal .gname { font-size: 16px; }
+  .qtyin { margin-left: 0; }
+  .qtyin input { font-size: 16px; width: 72px; padding: 6px 8px; }
+  .tile { padding: 8px; }
+  .tile b { font-size: 20px; }
+  .tile span { font-size: 11px; }
+  .plan-actions { flex-wrap: wrap; }
+  .plan-actions span { flex-basis: 100%; }
+  .plan-actions button { flex: 1; min-height: 38px; }
+  .step { padding: 8px; gap: 6px; }
+  .step input { width: 22px; height: 22px; }
+  .step .stocknote { margin-left: 0; flex-basis: 100%; }
+}
+
+@media (max-width: 400px) {
+  .legend span:nth-child(3) { display: none; }
+  .tile b { font-size: 18px; }
 }
