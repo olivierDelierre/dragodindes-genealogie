@@ -87,8 +87,9 @@ button, select, input { font-family: inherit; color: inherit; }
 .brand p { margin: 0; color: var(--ink-muted); font: 400 12px/18px var(--font-sans); }
 
 /* Bouton engrenage + popup d'options */
-.opt-wrap { position: relative; order: 3; }
-.opt-btn { width: 40px; height: 40px; min-width: 40px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-full); }
+.tools { order: 3; margin-left: auto; display: flex; align-items: center; gap: var(--space-2); }
+.opt-wrap { position: relative; }
+.opt-btn { width: 40px; height: 40px; min-width: 40px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: var(--radius-md); }
 .opt-btn[aria-expanded="true"] svg { transform: rotate(60deg); }
 .opt-btn svg { transition: transform .3s ease; }
 .options {
@@ -98,13 +99,20 @@ button, select, input { font-family: inherit; color: inherit; }
   background: color-mix(in srgb, var(--surface-raised) 96%, transparent);
   -webkit-backdrop-filter: blur(var(--blur-lg)); backdrop-filter: blur(var(--blur-lg));
 }
-.options[hidden], .auth[hidden], .opt-user[hidden], .opt-note[hidden] { display: none; }
+.options[hidden], .auth[hidden], .opt-note[hidden] { display: none; }
 .opt-title { font: 600 12px/18px var(--font-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-muted); margin-bottom: var(--space-2); }
 .seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: var(--space-1); }
 .seg--col { grid-auto-flow: row; }
 .seg .br-btn { white-space: nowrap; justify-content: center; }
-.opt-user { display: grid; justify-items: start; gap: var(--space-1); font-size: 14px; padding-bottom: var(--space-3); border-bottom: 1px solid var(--border); }
-.opt-user b { overflow-wrap: anywhere; }
+/* Compte : pastille avec l'initiale + bouton de déconnexion, à droite de l'engrenage */
+.acct { display: flex; align-items: center; gap: var(--space-2); }
+.acct[hidden] { display: none; }
+.avatar {
+  width: 40px; height: 40px; border-radius: var(--radius-full); flex-shrink: 0;
+  display: inline-grid; place-items: center; background: var(--brand-soft); color: var(--brand);
+  border: 2px solid var(--brand); font: 700 16px/1 var(--font-sans); user-select: none;
+}
+.logout { height: 40px; display: inline-flex; align-items: center; gap: var(--space-2); white-space: nowrap; }
 .opt-note { margin: 0; font-size: 12px; color: var(--ink-muted); }
 
 /* Écran de connexion */
@@ -133,6 +141,12 @@ body.auth-open .layout, body.auth-open .topbar > :not(.brand) { pointer-events: 
 .tabs .br-tabs__tab { min-height: 40px; padding: var(--space-2) var(--space-3); font-size: 14px; border-radius: var(--radius-md); }
 
 .tabs.views { order: 2; }
+
+/* Écran moyen : engrenage et compte restent à droite de la 1re ligne, les onglets passent dessous */
+@media (max-width: 1100px) {
+  .tools { order: 2; }
+  .tabs.views { order: 3; flex-basis: 100%; width: 100%; }
+}
 
 /* ---------- Mise en page ---------- */
 .layout { flex: 1; display: flex; min-height: 0; }
@@ -353,7 +367,9 @@ body.rev .card .tog { left: auto; right: -14px; }
   .brand h1 { font-size: 20px; }
   .brand p { display: none; }
   .menu { display: inline-flex; justify-content: flex-start; white-space: nowrap; order: 1; }
-  .opt-wrap { order: 2; }
+  .tools { order: 2; }
+  .logout .lg { display: none; }
+  .logout { width: 40px; padding: 0; justify-content: center; }
   .tabs.views { order: 3; }
   .tabs { flex-basis: 100%; width: 100%; }
   .tabs .br-tabs__tab { min-height: 40px; padding: var(--space-2); font-size: 14px; }
@@ -415,6 +431,13 @@ body.rev .card .tog { left: auto; right: -14px; }
   .step { padding: var(--space-2) var(--space-3); gap: var(--space-2); }
   .step input { width: 22px; height: 22px; }
   .step .stocknote { margin-left: 0; flex-basis: 100%; }
+}
+
+@media (max-width: 480px) {
+  .brand { flex: 0 0 auto; }
+  .brand h1 { display: none; } /* l'icône suffit à identifier l'app */
+  .menu { flex: 1; }
+  .opt-btn, .avatar, .logout { width: 38px; height: 38px; min-width: 38px; }
 }
 
 @media (max-width: 400px) {

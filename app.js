@@ -525,7 +525,7 @@
     if (f === fwd()) return;
     state.fwd = f; save(); renderAll(true); centerOverview('auto');
   });
-  $('#logoutBtn').addEventListener('click', () => { setOptions(false); logout(); });
+  $('#logoutBtn').addEventListener('click', logout);
   applyTheme();
 
   // ---------- Tiroir des montures (mobile) ----------
@@ -654,8 +654,12 @@
     owned.clear(); ids.map(legacy).filter(id => byId.has(id)).forEach(id => owned.add(id));
   }
   function showAccountUI() {
-    $('#optUser').hidden = !account.user;
-    if (account.user) $('#optName').textContent = account.user;
+    $('#acct').hidden = !account.user;
+    if (account.user) {
+      const av = $('#avatar');
+      av.textContent = [...account.user][0].toUpperCase();
+      av.title = 'Connecté : ' + account.user; av.setAttribute('aria-label', 'Connecté : ' + account.user);
+    }
     const note = $('#optNote');
     note.hidden = account.backend;
     note.textContent = account.backend ? '' : 'Mode local : pas de serveur détecté, les montures possédées restent dans ce navigateur. Lance « python3 server.py » pour avoir des comptes.';
