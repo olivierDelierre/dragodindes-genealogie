@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+<title>Haras</title>
+<style>
+:root{--ic-tile:#26A69A;--ic-glow:#4DB6AC;--ic-spark:#B2DFDB;--ic-head:#FFC107;--ic-snout:#FFD54F;--ic-snout2:#FFCA28;--ic-deep:#FFA000;--ic-horn:#8D6E63;--ic-eye:#FAFAFA;--ic-pupil:#3E2723;--ic-nose:#B26A00;--ic-fang:#FFF8E1}
+@media (prefers-color-scheme:dark){:root{--ic-tile:#00695C;--ic-glow:#00796B;--ic-spark:#4DB6AC;--ic-head:#FFB300;--ic-snout:#FFCA28;--ic-snout2:#FFC107;--ic-deep:#FF8F00;--ic-horn:#A1887F;--ic-eye:#ECEFF1;--ic-pupil:#1B0F0A;--ic-nose:#8A4B00;--ic-fang:#FFF3E0}}
+.ic-tile{fill:var(--ic-tile)}
+.ic-glow{fill:var(--ic-glow)}
+.ic-spark{fill:var(--ic-spark)}
+.ic-ear,.ic-head{fill:var(--ic-head)}
+.ic-deep{fill:var(--ic-deep)}
+.ic-horn{fill:var(--ic-horn)}
+.ic-snout{fill:var(--ic-snout)}
+.ic-snout2{fill:var(--ic-snout2)}
+.ic-nose{fill:var(--ic-nose)}
+.ic-line{fill:none;stroke:var(--ic-deep);stroke-width:2.4;stroke-linecap:round}
+.ic-fang{fill:var(--ic-fang)}
+.ic-eye{fill:var(--ic-eye)}
+.ic-pupil{fill:var(--ic-pupil)}
+.ic-hl{fill:var(--ic-eye)}
+</style>
+<rect class="ic-tile" x="4" y="4" width="120" height="120" rx="28"/>
+<circle class="ic-glow" cx="64" cy="72" r="48"/>
+<circle class="ic-spark" cx="21" cy="66" r="2.4"/><circle class="ic-spark" cx="108" cy="100" r="2.8"/><circle class="ic-spark" cx="19" cy="100" r="2"/><circle class="ic-spark" cx="109" cy="70" r="2"/><circle class="ic-spark" cx="30" cy="40" r="1.8"/>
+<path class="ic-deep" d="M48 96 L80 96 L84 124 L44 124Z"/>
+<path class="ic-ear" d="M45 66 C32 54 22 36 16 11 C36 17 56 31 63 49Z"/><path class="ic-deep" d="M45 59 C37 50 30 38 26 24 C38 30 50 40 55 51Z"/><g transform="translate(128 0) scale(-1 1)"><path class="ic-ear" d="M45 66 C32 54 22 36 16 11 C36 17 56 31 63 49Z"/><path class="ic-deep" d="M45 59 C37 50 30 38 26 24 C38 30 50 40 55 51Z"/></g>
+<path class="ic-horn" d="M47 44 C45 33 46 24 51 14 C56 23 58 34 58 45Z"/><g transform="translate(128 0) scale(-1 1)"><path class="ic-horn" d="M47 44 C45 33 46 24 51 14 C56 23 58 34 58 45Z"/></g>
+<path class="ic-head" d="M64 32 C82 32 92 44 92 58 C92 72 80 82 64 82 C48 82 36 72 36 58 C36 44 46 32 64 32Z"/>
+<path class="ic-deep" d="M42 82 L15 88 L34 101 L50 95Z"/><g transform="translate(128 0) scale(-1 1)"><path class="ic-deep" d="M42 82 L15 88 L34 101 L50 95Z"/></g>
+<path class="ic-snout" d="M54 50 L74 50 C77 66 85 78 87 88 C80 99 70 107 64 111 C58 107 48 99 41 88 C43 78 51 66 54 50Z"/>
+<path class="ic-snout2" d="M64 50 L54 50 C51 66 43 78 41 88 C48 99 58 107 64 111Z"/>
+<path class="ic-nose" d="M52 97 C52 92 57 91 59 94 C60 98 56 100 52 97Z"/>
+<path class="ic-nose" d="M76 97 C76 92 71 91 69 94 C68 98 72 100 76 97Z"/>
+<path class="ic-line" d="M33 91 Q38 97 46 98"/><path class="ic-line" d="M95 91 Q90 97 82 98"/>
+<path class="ic-fang" d="M73 104 L80 99 L77 112Z"/>
+<circle class="ic-eye" cx="43" cy="56" r="15"/><circle class="ic-eye" cx="85" cy="54" r="16"/>
+<circle class="ic-pupil" cx="39" cy="52" r="6.4"/><circle class="ic-pupil" cx="90" cy="49" r="6.8"/>
+<circle class="ic-hl" cx="36.5" cy="49.5" r="2.2"/><circle class="ic-hl" cx="87.5" cy="46.2" r="2.4"/>
+</svg>

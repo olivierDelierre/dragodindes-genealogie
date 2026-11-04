@@ -21,6 +21,11 @@
   --edge-dim: color-mix(in srgb, var(--ink) 14%, transparent);
 }
 
+/* Les contrôles natifs (cases, barres de défilement) suivent le thème effectif */
+:root { color-scheme: light dark; }
+:root[data-theme="light"] { color-scheme: light; }
+:root[data-theme="dark"] { color-scheme: dark; }
+
 * { box-sizing: border-box; }
 html, body { height: 100%; }
 html { -webkit-text-size-adjust: 100%; }
@@ -36,6 +41,37 @@ button, select, input { font-family: inherit; color: inherit; }
 .br-btn { cursor: pointer; }
 .br-btn--sm { font-size: 13px; }
 
+/* ---------- Icône Haras (tête de dragodinde, style Material) ----------
+   Mêmes formes et mêmes couleurs que icon.svg ; ici le thème suit l'app (bascule clair/sombre incluse). */
+.haras-icon {
+  --ic-tile: light-dark(#26A69A, #00695C);
+  --ic-glow: light-dark(#4DB6AC, #00796B);
+  --ic-spark: light-dark(#B2DFDB, #4DB6AC);
+  --ic-head: light-dark(#FFC107, #FFB300);
+  --ic-snout: light-dark(#FFD54F, #FFCA28);
+  --ic-snout2: light-dark(#FFCA28, #FFC107);
+  --ic-deep: light-dark(#FFA000, #FF8F00);
+  --ic-horn: light-dark(#8D6E63, #A1887F);
+  --ic-eye: light-dark(#FAFAFA, #ECEFF1);
+  --ic-pupil: light-dark(#3E2723, #1B0F0A);
+  --ic-nose: light-dark(#B26A00, #8A4B00);
+  --ic-fang: light-dark(#FFF8E1, #FFF3E0);
+}
+.ic-tile{fill:var(--ic-tile)}
+.ic-glow{fill:var(--ic-glow)}
+.ic-spark{fill:var(--ic-spark)}
+.ic-ear,.ic-head{fill:var(--ic-head)}
+.ic-deep{fill:var(--ic-deep)}
+.ic-horn{fill:var(--ic-horn)}
+.ic-snout{fill:var(--ic-snout)}
+.ic-snout2{fill:var(--ic-snout2)}
+.ic-nose{fill:var(--ic-nose)}
+.ic-line{fill:none;stroke:var(--ic-deep);stroke-width:2.4;stroke-linecap:round}
+.ic-fang{fill:var(--ic-fang)}
+.ic-eye{fill:var(--ic-eye)}
+.ic-pupil{fill:var(--ic-pupil)}
+.ic-hl{fill:var(--ic-eye)}
+
 /* ---------- Barre du haut (navbar en verre) ---------- */
 .topbar {
   display: flex; align-items: center; gap: var(--space-4); flex-wrap: wrap;
@@ -46,7 +82,7 @@ button, select, input { font-family: inherit; color: inherit; }
   position: relative; z-index: 10;
 }
 .brand { display: flex; align-items: center; gap: var(--space-3); margin-right: auto; }
-.brand img { width: 40px; height: 40px; object-fit: contain; }
+.brand .haras-icon { width: 40px; height: 40px; flex-shrink: 0; }
 .brand h1 { margin: 0; font: 700 22px/28px var(--font-sans); letter-spacing: -0.01em; }
 .brand p { margin: 0; color: var(--ink-muted); font: 400 12px/18px var(--font-sans); }
 .dir { white-space: nowrap; }
@@ -250,7 +286,7 @@ body.rev .card .tog { left: auto; right: -14px; }
     padding-left: max(var(--space-3), env(safe-area-inset-left)); padding-right: max(var(--space-3), env(safe-area-inset-right));
   }
   .brand { flex-basis: 100%; gap: var(--space-2); }
-  .brand img { width: 30px; height: 30px; }
+  .brand .haras-icon { width: 32px; height: 32px; }
   .brand h1 { font-size: 20px; }
   .brand p { display: none; }
   .menu { display: inline-flex; flex: 1; justify-content: flex-start; }

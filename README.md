@@ -26,3 +26,9 @@ pincer à deux doigts pour zoomer.
 L'interface utilise le design system **Brume** : `brume.css` contient les tokens (thèmes clair et sombre) et
 les classes de composants, `style.css` ne contient que les styles propres à l'application et n'utilise aucune
 couleur en dur. Police Nunito chargée depuis Google Fonts (repli sur Helvetica Neue hors ligne).
+
+## Icône
+
+`icon.svg` (tête de dragodinde de face, style Material : aplats et tons superposés) s'adapte au thème du
+navigateur ; dans l'en-tête, la même icône est inlinée et suit le bouton clair/sombre de l'application.
+`icon-32.png` et `apple-touch-icon.png` sont les versions PNG de secours (favicon et écran d'accueil iOS).
