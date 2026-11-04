@@ -37,7 +37,31 @@ def db():
     return con
 
 
+def check_db_dir():
+    """Échoue tôt, avec un message utile, si le dossier de la base n'est pas inscriptible (cas fréquent en Docker)."""
+    folder = os.path.dirname(os.path.abspath(DB_PATH))
+    try:
+        os.makedirs(folder, exist_ok=True)
+        probe = os.path.join(folder, '.haras-write-test')
+        with open(probe, 'w'):
+            pass
+        os.remove(probe)
+    except OSError as e:
+        uid = os.getuid() if hasattr(os, 'getuid') else '?'
+        gid = os.getgid() if hasattr(os, 'getgid') else '?'
+        try:
+            st = os.stat(folder)
+            owner = f'propriétaire uid={st.st_uid} gid={st.st_gid}, mode={oct(st.st_mode & 0o777)}'
+        except OSError:
+            owner = 'dossier introuvable'
+        sys.exit(f"Impossible d'écrire dans {folder} ({e.strerror}).\n"
+                 f"  Le serveur tourne avec uid={uid} gid={gid} ; le dossier a : {owner}.\n"
+                 f"  Donne-lui les droits d'écriture (ex. propriétaire 568:568 sur le dataset monté sur /data) "
+                 f"ou change HARAS_DB.")
+
+
 def init_db():
+    check_db_dir()
     with db() as con:
         con.execute('PRAGMA journal_mode = WAL')
         con.executescript("""
