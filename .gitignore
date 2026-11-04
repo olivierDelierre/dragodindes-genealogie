@@ -1,1 +1,4 @@
+haras.db
+haras.db-*
+__pycache__/
 .DS_Store

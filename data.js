@@ -1,654 +1,310 @@
-// Données extraites de https://dofuselevage.fr/tools/reproduction/dragodinde/genealogie
-window.DRAGODINDES = [
- {
-  "id": "amande",
-  "name": "Amande",
-  "gen": 1,
-  "img": "images/amande.png",
-  "parents": null
- },
- {
-  "id": "doree",
-  "name": "Dorée",
-  "gen": 1,
-  "img": "images/doree.png",
-  "parents": null
- },
- {
-  "id": "rousse",
-  "name": "Rousse",
-  "gen": 1,
-  "img": "images/rousse.png",
-  "parents": null
- },
- {
-  "id": "amande-et-doree",
-  "name": "Amande et Dorée",
-  "gen": 2,
-  "img": "images/amande-et-doree.png",
-  "parents": [
-   "Amande",
-   "Dorée"
-  ]
- },
- {
-  "id": "amande-et-rousse",
-  "name": "Amande et Rousse",
-  "gen": 2,
-  "img": "images/amande-et-rousse.png",
-  "parents": [
-   "Amande",
-   "Rousse"
-  ]
- },
- {
-  "id": "doree-et-rousse",
-  "name": "Dorée et Rousse",
-  "gen": 2,
-  "img": "images/doree-et-rousse.png",
-  "parents": [
-   "Dorée",
-   "Rousse"
-  ]
- },
- {
-  "id": "ebene",
-  "name": "Ébène",
-  "gen": 3,
-  "img": "images/ebene.png",
-  "parents": [
-   "Amande et Dorée",
-   "Dorée et Rousse"
-  ]
- },
- {
-  "id": "indigo",
-  "name": "Indigo",
-  "gen": 3,
-  "img": "images/indigo.png",
-  "parents": [
-   "Amande et Dorée",
-   "Amande et Rousse"
-  ]
- },
- {
-  "id": "amande-et-ebene",
-  "name": "Amande et Ébène",
-  "gen": 4,
-  "img": "images/amande-et-ebene.png",
-  "parents": [
-   "Amande",
-   "Ébène"
-  ]
- },
- {
-  "id": "amande-et-indigo",
-  "name": "Amande et Indigo",
-  "gen": 4,
-  "img": "images/amande-et-indigo.png",
-  "parents": [
-   "Amande",
-   "Indigo"
-  ]
- },
- {
-  "id": "doree-et-ebene",
-  "name": "Dorée et Ébène",
-  "gen": 4,
-  "img": "images/doree-et-ebene.png",
-  "parents": [
-   "Dorée",
-   "Ébène"
-  ]
- },
- {
-  "id": "doree-et-indigo",
-  "name": "Dorée et Indigo",
-  "gen": 4,
-  "img": "images/doree-et-indigo.png",
-  "parents": [
-   "Dorée",
-   "Indigo"
-  ]
- },
- {
-  "id": "ebene-et-indigo",
-  "name": "Ébène et Indigo",
-  "gen": 4,
-  "img": "images/ebene-et-indigo.png",
-  "parents": [
-   "Ébène",
-   "Indigo"
-  ]
- },
- {
-  "id": "ebene-et-rousse",
-  "name": "Ébène et Rousse",
-  "gen": 4,
-  "img": "images/ebene-et-rousse.png",
-  "parents": [
-   "Ébène",
-   "Rousse"
-  ]
- },
- {
-  "id": "indigo-et-rousse",
-  "name": "Indigo et Rousse",
-  "gen": 4,
-  "img": "images/indigo-et-rousse.png",
-  "parents": [
-   "Indigo",
-   "Rousse"
-  ]
- },
- {
-  "id": "orchidee",
-  "name": "Orchidée",
-  "gen": 5,
-  "img": "images/orchidee.png",
-  "parents": [
-   "Ébène et Indigo",
-   "Dorée et Rousse"
-  ]
- },
- {
-  "id": "pourpre",
-  "name": "Pourpre",
-  "gen": 5,
-  "img": "images/pourpre.png",
-  "parents": [
-   "Ébène et Indigo",
-   "Amande et Rousse"
-  ]
- },
- {
-  "id": "amande-et-orchidee",
-  "name": "Amande et Orchidée",
-  "gen": 6,
-  "img": "images/amande-et-orchidee.png",
-  "parents": [
-   "Amande",
-   "Orchidée"
-  ]
- },
- {
-  "id": "amande-et-pourpre",
-  "name": "Amande et Pourpre",
-  "gen": 6,
-  "img": "images/amande-et-pourpre.png",
-  "parents": [
-   "Amande",
-   "Pourpre"
-  ]
- },
- {
-  "id": "doree-et-orchidee",
-  "name": "Dorée et Orchidée",
-  "gen": 6,
-  "img": "images/doree-et-orchidee.png",
-  "parents": [
-   "Dorée",
-   "Orchidée"
-  ]
- },
- {
-  "id": "doree-et-pourpre",
-  "name": "Dorée et Pourpre",
-  "gen": 6,
-  "img": "images/doree-et-pourpre.png",
-  "parents": [
-   "Dorée",
-   "Pourpre"
-  ]
- },
- {
-  "id": "ebene-et-orchidee",
-  "name": "Ébène et Orchidée",
-  "gen": 6,
-  "img": "images/ebene-et-orchidee.png",
-  "parents": [
-   "Ébène",
-   "Orchidée"
-  ]
- },
- {
-  "id": "ebene-et-pourpre",
-  "name": "Ébène et Pourpre",
-  "gen": 6,
-  "img": "images/ebene-et-pourpre.png",
-  "parents": [
-   "Ébène",
-   "Pourpre"
-  ]
- },
- {
-  "id": "indigo-et-orchidee",
-  "name": "Indigo et Orchidée",
-  "gen": 6,
-  "img": "images/indigo-et-orchidee.png",
-  "parents": [
-   "Indigo",
-   "Orchidée"
-  ]
- },
- {
-  "id": "indigo-et-pourpre",
-  "name": "Indigo et Pourpre",
-  "gen": 6,
-  "img": "images/indigo-et-pourpre.png",
-  "parents": [
-   "Indigo",
-   "Pourpre"
-  ]
- },
- {
-  "id": "orchidee-et-pourpre",
-  "name": "Orchidée et Pourpre",
-  "gen": 6,
-  "img": "images/orchidee-et-pourpre.png",
-  "parents": [
-   "Orchidée",
-   "Pourpre"
-  ]
- },
- {
-  "id": "orchidee-et-rousse",
-  "name": "Orchidée et Rousse",
-  "gen": 6,
-  "img": "images/orchidee-et-rousse.png",
-  "parents": [
-   "Orchidée",
-   "Rousse"
-  ]
- },
- {
-  "id": "pourpre-et-rousse",
-  "name": "Pourpre et Rousse",
-  "gen": 6,
-  "img": "images/pourpre-et-rousse.png",
-  "parents": [
-   "Pourpre",
-   "Rousse"
-  ]
- },
- {
-  "id": "ivoire",
-  "name": "Ivoire",
-  "gen": 7,
-  "img": "images/ivoire.png",
-  "parents": [
-   "Orchidée et Pourpre",
-   "Indigo et Pourpre"
-  ]
- },
- {
-  "id": "turquoise",
-  "name": "Turquoise",
-  "gen": 7,
-  "img": "images/turquoise.png",
-  "parents": [
-   "Orchidée et Pourpre",
-   "Ébène et Orchidée"
-  ]
- },
- {
-  "id": "amande-et-ivoire",
-  "name": "Amande et Ivoire",
-  "gen": 8,
-  "img": "images/amande-et-ivoire.png",
-  "parents": [
-   "Amande",
-   "Ivoire"
-  ]
- },
- {
-  "id": "amande-et-turquoise",
-  "name": "Amande et Turquoise",
-  "gen": 8,
-  "img": "images/amande-et-turquoise.png",
-  "parents": [
-   "Amande",
-   "Turquoise"
-  ]
- },
- {
-  "id": "doree-et-ivoire",
-  "name": "Dorée et Ivoire",
-  "gen": 8,
-  "img": "images/doree-et-ivoire.png",
-  "parents": [
-   "Dorée",
-   "Ivoire"
-  ]
- },
- {
-  "id": "doree-et-turquoise",
-  "name": "Dorée et Turquoise",
-  "gen": 8,
-  "img": "images/doree-et-turquoise.png",
-  "parents": [
-   "Dorée",
-   "Turquoise"
-  ]
- },
- {
-  "id": "ebene-et-ivoire",
-  "name": "Ébène et Ivoire",
-  "gen": 8,
-  "img": "images/ebene-et-ivoire.png",
-  "parents": [
-   "Ébène",
-   "Ivoire"
-  ]
- },
- {
-  "id": "ebene-et-turquoise",
-  "name": "Ébène et Turquoise",
-  "gen": 8,
-  "img": "images/ebene-et-turquoise.png",
-  "parents": [
-   "Ébène",
-   "Turquoise"
-  ]
- },
- {
-  "id": "indigo-et-ivoire",
-  "name": "Indigo et Ivoire",
-  "gen": 8,
-  "img": "images/indigo-et-ivoire.png",
-  "parents": [
-   "Indigo",
-   "Ivoire"
-  ]
- },
- {
-  "id": "indigo-et-turquoise",
-  "name": "Indigo et Turquoise",
-  "gen": 8,
-  "img": "images/indigo-et-turquoise.png",
-  "parents": [
-   "Indigo",
-   "Turquoise"
-  ]
- },
- {
-  "id": "ivoire-et-orchidee",
-  "name": "Ivoire et Orchidée",
-  "gen": 8,
-  "img": "images/ivoire-et-orchidee.png",
-  "parents": [
-   "Ivoire",
-   "Orchidée"
-  ]
- },
- {
-  "id": "ivoire-et-pourpre",
-  "name": "Ivoire et Pourpre",
-  "gen": 8,
-  "img": "images/ivoire-et-pourpre.png",
-  "parents": [
-   "Ivoire",
-   "Pourpre"
-  ]
- },
- {
-  "id": "ivoire-et-rousse",
-  "name": "Ivoire et Rousse",
-  "gen": 8,
-  "img": "images/ivoire-et-rousse.png",
-  "parents": [
-   "Ivoire",
-   "Rousse"
-  ]
- },
- {
-  "id": "ivoire-et-turquoise",
-  "name": "Ivoire et Turquoise",
-  "gen": 8,
-  "img": "images/ivoire-et-turquoise.png",
-  "parents": [
-   "Ivoire",
-   "Turquoise"
-  ]
- },
- {
-  "id": "turquoise-et-orchidee",
-  "name": "Turquoise et Orchidée",
-  "gen": 8,
-  "img": "images/turquoise-et-orchidee.png",
-  "parents": [
-   "Turquoise",
-   "Orchidée"
-  ]
- },
- {
-  "id": "turquoise-et-pourpre",
-  "name": "Turquoise et Pourpre",
-  "gen": 8,
-  "img": "images/turquoise-et-pourpre.png",
-  "parents": [
-   "Turquoise",
-   "Pourpre"
-  ]
- },
- {
-  "id": "turquoise-et-rousse",
-  "name": "Turquoise et Rousse",
-  "gen": 8,
-  "img": "images/turquoise-et-rousse.png",
-  "parents": [
-   "Turquoise",
-   "Rousse"
-  ]
- },
- {
-  "id": "emeraude",
-  "name": "Émeraude",
-  "gen": 9,
-  "img": "images/emeraude.png",
-  "parents": [
-   "Ivoire et Turquoise",
-   "Ivoire et Pourpre"
-  ]
- },
- {
-  "id": "prune",
-  "name": "Prune",
-  "gen": 9,
-  "img": "images/prune.png",
-  "parents": [
-   "Ivoire et Turquoise",
-   "Turquoise et Orchidée"
-  ]
- },
- {
-  "id": "amande-et-emeraude",
-  "name": "Amande et Émeraude",
-  "gen": 10,
-  "img": "images/amande-et-emeraude.png",
-  "parents": [
-   "Amande",
-   "Émeraude"
-  ]
- },
- {
-  "id": "doree-et-emeraude",
-  "name": "Dorée et Émeraude",
-  "gen": 10,
-  "img": "images/doree-et-emeraude.png",
-  "parents": [
-   "Dorée",
-   "Émeraude"
-  ]
- },
- {
-  "id": "ebene-et-emeraude",
-  "name": "Ébène et Émeraude",
-  "gen": 10,
-  "img": "images/ebene-et-emeraude.png",
-  "parents": [
-   "Ébène",
-   "Émeraude"
-  ]
- },
- {
-  "id": "emeraude-et-indigo",
-  "name": "Émeraude et Indigo",
-  "gen": 10,
-  "img": "images/emeraude-et-indigo.png",
-  "parents": [
-   "Émeraude",
-   "Indigo"
-  ]
- },
- {
-  "id": "emeraude-et-ivoire",
-  "name": "Émeraude et Ivoire",
-  "gen": 10,
-  "img": "images/emeraude-et-ivoire.png",
-  "parents": [
-   "Émeraude",
-   "Ivoire"
-  ]
- },
- {
-  "id": "emeraude-et-orchidee",
-  "name": "Émeraude et Orchidée",
-  "gen": 10,
-  "img": "images/emeraude-et-orchidee.png",
-  "parents": [
-   "Émeraude",
-   "Orchidée"
-  ]
- },
- {
-  "id": "emeraude-et-pourpre",
-  "name": "Émeraude et Pourpre",
-  "gen": 10,
-  "img": "images/emeraude-et-pourpre.png",
-  "parents": [
-   "Émeraude",
-   "Pourpre"
-  ]
- },
- {
-  "id": "emeraude-et-rousse",
-  "name": "Émeraude et Rousse",
-  "gen": 10,
-  "img": "images/emeraude-et-rousse.png",
-  "parents": [
-   "Émeraude",
-   "Rousse"
-  ]
- },
- {
-  "id": "emeraude-et-turquoise",
-  "name": "Émeraude et Turquoise",
-  "gen": 10,
-  "img": "images/emeraude-et-turquoise.png",
-  "parents": [
-   "Émeraude",
-   "Turquoise"
-  ]
- },
- {
-  "id": "prune-et-amande",
-  "name": "Prune et Amande",
-  "gen": 10,
-  "img": "images/prune-et-amande.png",
-  "parents": [
-   "Prune",
-   "Amande"
-  ]
- },
- {
-  "id": "prune-et-doree",
-  "name": "Prune et Dorée",
-  "gen": 10,
-  "img": "images/prune-et-doree.png",
-  "parents": [
-   "Prune",
-   "Dorée"
-  ]
- },
- {
-  "id": "prune-et-ebene",
-  "name": "Prune et Ébène",
-  "gen": 10,
-  "img": "images/prune-et-ebene.png",
-  "parents": [
-   "Prune",
-   "Ébène"
-  ]
- },
- {
-  "id": "prune-et-emeraude",
-  "name": "Prune et Émeraude",
-  "gen": 10,
-  "img": "images/prune-et-emeraude.png",
-  "parents": [
-   "Prune",
-   "Émeraude"
-  ]
- },
- {
-  "id": "prune-et-indigo",
-  "name": "Prune et Indigo",
-  "gen": 10,
-  "img": "images/prune-et-indigo.png",
-  "parents": [
-   "Prune",
-   "Indigo"
-  ]
- },
- {
-  "id": "prune-et-ivoire",
-  "name": "Prune et Ivoire",
-  "gen": 10,
-  "img": "images/prune-et-ivoire.png",
-  "parents": [
-   "Prune",
-   "Ivoire"
-  ]
- },
- {
-  "id": "prune-et-orchidee",
-  "name": "Prune et Orchidée",
-  "gen": 10,
-  "img": "images/prune-et-orchidee.png",
-  "parents": [
-   "Prune",
-   "Orchidée"
-  ]
- },
- {
-  "id": "prune-et-pourpre",
-  "name": "Prune et Pourpre",
-  "gen": 10,
-  "img": "images/prune-et-pourpre.png",
-  "parents": [
-   "Prune",
-   "Pourpre"
-  ]
- },
- {
-  "id": "prune-et-rousse",
-  "name": "Prune et Rousse",
-  "gen": 10,
-  "img": "images/prune-et-rousse.png",
-  "parents": [
-   "Prune",
-   "Rousse"
-  ]
- },
- {
-  "id": "prune-et-turquoise",
-  "name": "Prune et Turquoise",
-  "gen": 10,
-  "img": "images/prune-et-turquoise.png",
-  "parents": [
-   "Prune",
-   "Turquoise"
-  ]
- }
+// Montures : dragodindes, muldos, volkornes. Recettes (parents) issues de DofusElevage, noms et images de l'API publique DofusDude (Ankama).
+// recipes = liste des couples [Parent 1, Parent 2] possibles (null pour une monture sauvage G1).
+window.MOUNTS = [
+ {"id":"d:amande","type":"dragodinde","name":"Amande","gen":1,"img":"images/dragodinde/amande.png","recipes":null},
+ {"id":"d:doree","type":"dragodinde","name":"Dorée","gen":1,"img":"images/dragodinde/doree.png","recipes":null},
+ {"id":"d:rousse","type":"dragodinde","name":"Rousse","gen":1,"img":"images/dragodinde/rousse.png","recipes":null},
+ {"id":"d:amande-et-doree","type":"dragodinde","name":"Amande et Dorée","gen":2,"img":"images/dragodinde/amande-et-doree.png","recipes":[["d:amande","d:doree"]]},
+ {"id":"d:amande-et-rousse","type":"dragodinde","name":"Amande et Rousse","gen":2,"img":"images/dragodinde/amande-et-rousse.png","recipes":[["d:amande","d:rousse"]]},
+ {"id":"d:doree-et-rousse","type":"dragodinde","name":"Dorée et Rousse","gen":2,"img":"images/dragodinde/doree-et-rousse.png","recipes":[["d:doree","d:rousse"]]},
+ {"id":"d:ebene","type":"dragodinde","name":"Ébène","gen":3,"img":"images/dragodinde/ebene.png","recipes":[["d:amande-et-doree","d:doree-et-rousse"]]},
+ {"id":"d:indigo","type":"dragodinde","name":"Indigo","gen":3,"img":"images/dragodinde/indigo.png","recipes":[["d:amande-et-doree","d:amande-et-rousse"]]},
+ {"id":"d:amande-et-ebene","type":"dragodinde","name":"Amande et Ébène","gen":4,"img":"images/dragodinde/amande-et-ebene.png","recipes":[["d:amande","d:ebene"]]},
+ {"id":"d:amande-et-indigo","type":"dragodinde","name":"Amande et Indigo","gen":4,"img":"images/dragodinde/amande-et-indigo.png","recipes":[["d:amande","d:indigo"]]},
+ {"id":"d:doree-et-ebene","type":"dragodinde","name":"Dorée et Ébène","gen":4,"img":"images/dragodinde/doree-et-ebene.png","recipes":[["d:doree","d:ebene"]]},
+ {"id":"d:doree-et-indigo","type":"dragodinde","name":"Dorée et Indigo","gen":4,"img":"images/dragodinde/doree-et-indigo.png","recipes":[["d:doree","d:indigo"]]},
+ {"id":"d:ebene-et-indigo","type":"dragodinde","name":"Ébène et Indigo","gen":4,"img":"images/dragodinde/ebene-et-indigo.png","recipes":[["d:ebene","d:indigo"]]},
+ {"id":"d:ebene-et-rousse","type":"dragodinde","name":"Ébène et Rousse","gen":4,"img":"images/dragodinde/ebene-et-rousse.png","recipes":[["d:ebene","d:rousse"]]},
+ {"id":"d:indigo-et-rousse","type":"dragodinde","name":"Indigo et Rousse","gen":4,"img":"images/dragodinde/indigo-et-rousse.png","recipes":[["d:indigo","d:rousse"]]},
+ {"id":"d:orchidee","type":"dragodinde","name":"Orchidée","gen":5,"img":"images/dragodinde/orchidee.png","recipes":[["d:ebene-et-indigo","d:doree-et-rousse"]]},
+ {"id":"d:pourpre","type":"dragodinde","name":"Pourpre","gen":5,"img":"images/dragodinde/pourpre.png","recipes":[["d:ebene-et-indigo","d:amande-et-rousse"]]},
+ {"id":"d:amande-et-orchidee","type":"dragodinde","name":"Amande et Orchidée","gen":6,"img":"images/dragodinde/amande-et-orchidee.png","recipes":[["d:amande","d:orchidee"]]},
+ {"id":"d:amande-et-pourpre","type":"dragodinde","name":"Amande et Pourpre","gen":6,"img":"images/dragodinde/amande-et-pourpre.png","recipes":[["d:amande","d:pourpre"]]},
+ {"id":"d:doree-et-orchidee","type":"dragodinde","name":"Dorée et Orchidée","gen":6,"img":"images/dragodinde/doree-et-orchidee.png","recipes":[["d:doree","d:orchidee"]]},
+ {"id":"d:doree-et-pourpre","type":"dragodinde","name":"Dorée et Pourpre","gen":6,"img":"images/dragodinde/doree-et-pourpre.png","recipes":[["d:doree","d:pourpre"]]},
+ {"id":"d:ebene-et-orchidee","type":"dragodinde","name":"Ébène et Orchidée","gen":6,"img":"images/dragodinde/ebene-et-orchidee.png","recipes":[["d:ebene","d:orchidee"]]},
+ {"id":"d:ebene-et-pourpre","type":"dragodinde","name":"Ébène et Pourpre","gen":6,"img":"images/dragodinde/ebene-et-pourpre.png","recipes":[["d:ebene","d:pourpre"]]},
+ {"id":"d:indigo-et-orchidee","type":"dragodinde","name":"Indigo et Orchidée","gen":6,"img":"images/dragodinde/indigo-et-orchidee.png","recipes":[["d:indigo","d:orchidee"]]},
+ {"id":"d:indigo-et-pourpre","type":"dragodinde","name":"Indigo et Pourpre","gen":6,"img":"images/dragodinde/indigo-et-pourpre.png","recipes":[["d:indigo","d:pourpre"]]},
+ {"id":"d:orchidee-et-pourpre","type":"dragodinde","name":"Orchidée et Pourpre","gen":6,"img":"images/dragodinde/orchidee-et-pourpre.png","recipes":[["d:orchidee","d:pourpre"]]},
+ {"id":"d:orchidee-et-rousse","type":"dragodinde","name":"Orchidée et Rousse","gen":6,"img":"images/dragodinde/orchidee-et-rousse.png","recipes":[["d:orchidee","d:rousse"]]},
+ {"id":"d:pourpre-et-rousse","type":"dragodinde","name":"Pourpre et Rousse","gen":6,"img":"images/dragodinde/pourpre-et-rousse.png","recipes":[["d:pourpre","d:rousse"]]},
+ {"id":"d:ivoire","type":"dragodinde","name":"Ivoire","gen":7,"img":"images/dragodinde/ivoire.png","recipes":[["d:orchidee-et-pourpre","d:indigo-et-pourpre"]]},
+ {"id":"d:turquoise","type":"dragodinde","name":"Turquoise","gen":7,"img":"images/dragodinde/turquoise.png","recipes":[["d:orchidee-et-pourpre","d:ebene-et-orchidee"]]},
+ {"id":"d:amande-et-ivoire","type":"dragodinde","name":"Amande et Ivoire","gen":8,"img":"images/dragodinde/amande-et-ivoire.png","recipes":[["d:amande","d:ivoire"]]},
+ {"id":"d:amande-et-turquoise","type":"dragodinde","name":"Amande et Turquoise","gen":8,"img":"images/dragodinde/amande-et-turquoise.png","recipes":[["d:amande","d:turquoise"]]},
+ {"id":"d:doree-et-ivoire","type":"dragodinde","name":"Dorée et Ivoire","gen":8,"img":"images/dragodinde/doree-et-ivoire.png","recipes":[["d:doree","d:ivoire"]]},
+ {"id":"d:doree-et-turquoise","type":"dragodinde","name":"Dorée et Turquoise","gen":8,"img":"images/dragodinde/doree-et-turquoise.png","recipes":[["d:doree","d:turquoise"]]},
+ {"id":"d:ebene-et-ivoire","type":"dragodinde","name":"Ébène et Ivoire","gen":8,"img":"images/dragodinde/ebene-et-ivoire.png","recipes":[["d:ebene","d:ivoire"]]},
+ {"id":"d:ebene-et-turquoise","type":"dragodinde","name":"Ébène et Turquoise","gen":8,"img":"images/dragodinde/ebene-et-turquoise.png","recipes":[["d:ebene","d:turquoise"]]},
+ {"id":"d:indigo-et-ivoire","type":"dragodinde","name":"Indigo et Ivoire","gen":8,"img":"images/dragodinde/indigo-et-ivoire.png","recipes":[["d:indigo","d:ivoire"]]},
+ {"id":"d:indigo-et-turquoise","type":"dragodinde","name":"Indigo et Turquoise","gen":8,"img":"images/dragodinde/indigo-et-turquoise.png","recipes":[["d:indigo","d:turquoise"]]},
+ {"id":"d:ivoire-et-orchidee","type":"dragodinde","name":"Ivoire et Orchidée","gen":8,"img":"images/dragodinde/ivoire-et-orchidee.png","recipes":[["d:ivoire","d:orchidee"]]},
+ {"id":"d:ivoire-et-pourpre","type":"dragodinde","name":"Ivoire et Pourpre","gen":8,"img":"images/dragodinde/ivoire-et-pourpre.png","recipes":[["d:ivoire","d:pourpre"]]},
+ {"id":"d:ivoire-et-rousse","type":"dragodinde","name":"Ivoire et Rousse","gen":8,"img":"images/dragodinde/ivoire-et-rousse.png","recipes":[["d:ivoire","d:rousse"]]},
+ {"id":"d:ivoire-et-turquoise","type":"dragodinde","name":"Ivoire et Turquoise","gen":8,"img":"images/dragodinde/ivoire-et-turquoise.png","recipes":[["d:ivoire","d:turquoise"]]},
+ {"id":"d:turquoise-et-orchidee","type":"dragodinde","name":"Turquoise et Orchidée","gen":8,"img":"images/dragodinde/turquoise-et-orchidee.png","recipes":[["d:turquoise","d:orchidee"]]},
+ {"id":"d:turquoise-et-pourpre","type":"dragodinde","name":"Turquoise et Pourpre","gen":8,"img":"images/dragodinde/turquoise-et-pourpre.png","recipes":[["d:turquoise","d:pourpre"]]},
+ {"id":"d:turquoise-et-rousse","type":"dragodinde","name":"Turquoise et Rousse","gen":8,"img":"images/dragodinde/turquoise-et-rousse.png","recipes":[["d:turquoise","d:rousse"]]},
+ {"id":"d:emeraude","type":"dragodinde","name":"Émeraude","gen":9,"img":"images/dragodinde/emeraude.png","recipes":[["d:ivoire-et-turquoise","d:ivoire-et-pourpre"]]},
+ {"id":"d:prune","type":"dragodinde","name":"Prune","gen":9,"img":"images/dragodinde/prune.png","recipes":[["d:ivoire-et-turquoise","d:turquoise-et-orchidee"]]},
+ {"id":"d:amande-et-emeraude","type":"dragodinde","name":"Amande et Émeraude","gen":10,"img":"images/dragodinde/amande-et-emeraude.png","recipes":[["d:amande","d:emeraude"]]},
+ {"id":"d:doree-et-emeraude","type":"dragodinde","name":"Dorée et Émeraude","gen":10,"img":"images/dragodinde/doree-et-emeraude.png","recipes":[["d:doree","d:emeraude"]]},
+ {"id":"d:ebene-et-emeraude","type":"dragodinde","name":"Ébène et Émeraude","gen":10,"img":"images/dragodinde/ebene-et-emeraude.png","recipes":[["d:ebene","d:emeraude"]]},
+ {"id":"d:emeraude-et-indigo","type":"dragodinde","name":"Émeraude et Indigo","gen":10,"img":"images/dragodinde/emeraude-et-indigo.png","recipes":[["d:emeraude","d:indigo"]]},
+ {"id":"d:emeraude-et-ivoire","type":"dragodinde","name":"Émeraude et Ivoire","gen":10,"img":"images/dragodinde/emeraude-et-ivoire.png","recipes":[["d:emeraude","d:ivoire"]]},
+ {"id":"d:emeraude-et-orchidee","type":"dragodinde","name":"Émeraude et Orchidée","gen":10,"img":"images/dragodinde/emeraude-et-orchidee.png","recipes":[["d:emeraude","d:orchidee"]]},
+ {"id":"d:emeraude-et-pourpre","type":"dragodinde","name":"Émeraude et Pourpre","gen":10,"img":"images/dragodinde/emeraude-et-pourpre.png","recipes":[["d:emeraude","d:pourpre"]]},
+ {"id":"d:emeraude-et-rousse","type":"dragodinde","name":"Émeraude et Rousse","gen":10,"img":"images/dragodinde/emeraude-et-rousse.png","recipes":[["d:emeraude","d:rousse"]]},
+ {"id":"d:emeraude-et-turquoise","type":"dragodinde","name":"Émeraude et Turquoise","gen":10,"img":"images/dragodinde/emeraude-et-turquoise.png","recipes":[["d:emeraude","d:turquoise"]]},
+ {"id":"d:prune-et-amande","type":"dragodinde","name":"Prune et Amande","gen":10,"img":"images/dragodinde/prune-et-amande.png","recipes":[["d:prune","d:amande"]]},
+ {"id":"d:prune-et-doree","type":"dragodinde","name":"Prune et Dorée","gen":10,"img":"images/dragodinde/prune-et-doree.png","recipes":[["d:prune","d:doree"]]},
+ {"id":"d:prune-et-ebene","type":"dragodinde","name":"Prune et Ébène","gen":10,"img":"images/dragodinde/prune-et-ebene.png","recipes":[["d:prune","d:ebene"]]},
+ {"id":"d:prune-et-emeraude","type":"dragodinde","name":"Prune et Émeraude","gen":10,"img":"images/dragodinde/prune-et-emeraude.png","recipes":[["d:prune","d:emeraude"]]},
+ {"id":"d:prune-et-indigo","type":"dragodinde","name":"Prune et Indigo","gen":10,"img":"images/dragodinde/prune-et-indigo.png","recipes":[["d:prune","d:indigo"]]},
+ {"id":"d:prune-et-ivoire","type":"dragodinde","name":"Prune et Ivoire","gen":10,"img":"images/dragodinde/prune-et-ivoire.png","recipes":[["d:prune","d:ivoire"]]},
+ {"id":"d:prune-et-orchidee","type":"dragodinde","name":"Prune et Orchidée","gen":10,"img":"images/dragodinde/prune-et-orchidee.png","recipes":[["d:prune","d:orchidee"]]},
+ {"id":"d:prune-et-pourpre","type":"dragodinde","name":"Prune et Pourpre","gen":10,"img":"images/dragodinde/prune-et-pourpre.png","recipes":[["d:prune","d:pourpre"]]},
+ {"id":"d:prune-et-rousse","type":"dragodinde","name":"Prune et Rousse","gen":10,"img":"images/dragodinde/prune-et-rousse.png","recipes":[["d:prune","d:rousse"]]},
+ {"id":"d:prune-et-turquoise","type":"dragodinde","name":"Prune et Turquoise","gen":10,"img":"images/dragodinde/prune-et-turquoise.png","recipes":[["d:prune","d:turquoise"]]},
+ {"id":"m:dore","type":"muldo","name":"Doré","gen":1,"img":"images/muldo/dore.png","recipes":null},
+ {"id":"m:ebene","type":"muldo","name":"Ébène","gen":1,"img":"images/muldo/ebene.png","recipes":null},
+ {"id":"m:indigo","type":"muldo","name":"Indigo","gen":1,"img":"images/muldo/indigo.png","recipes":null},
+ {"id":"m:orchidee","type":"muldo","name":"Orchidée","gen":1,"img":"images/muldo/orchidee.png","recipes":null},
+ {"id":"m:pourpre","type":"muldo","name":"Pourpre","gen":1,"img":"images/muldo/pourpre.png","recipes":null},
+ {"id":"m:dore-ebene","type":"muldo","name":"Doré et Ébène","gen":2,"img":"images/muldo/dore-ebene.png","recipes":[["m:dore","m:ebene"]]},
+ {"id":"m:dore-indigo","type":"muldo","name":"Doré et Indigo","gen":2,"img":"images/muldo/dore-indigo.png","recipes":[["m:dore","m:indigo"]]},
+ {"id":"m:dore-orchidee","type":"muldo","name":"Doré et Orchidée","gen":2,"img":"images/muldo/dore-orchidee.png","recipes":[["m:dore","m:orchidee"]]},
+ {"id":"m:dore-pourpre","type":"muldo","name":"Doré et Pourpre","gen":2,"img":"images/muldo/dore-pourpre.png","recipes":[["m:dore","m:pourpre"]]},
+ {"id":"m:ebene-indigo","type":"muldo","name":"Ébène et Indigo","gen":2,"img":"images/muldo/ebene-indigo.png","recipes":[["m:ebene","m:indigo"]]},
+ {"id":"m:ebene-orchidee","type":"muldo","name":"Ébène et Orchidée","gen":2,"img":"images/muldo/ebene-orchidee.png","recipes":[["m:ebene","m:orchidee"]]},
+ {"id":"m:ebene-pourpre","type":"muldo","name":"Ébène et Pourpre","gen":2,"img":"images/muldo/ebene-pourpre.png","recipes":[["m:ebene","m:pourpre"]]},
+ {"id":"m:indigo-orchidee","type":"muldo","name":"Indigo et Orchidée","gen":2,"img":"images/muldo/indigo-orchidee.png","recipes":[["m:indigo","m:orchidee"]]},
+ {"id":"m:indigo-pourpre","type":"muldo","name":"Indigo et Pourpre","gen":2,"img":"images/muldo/indigo-pourpre.png","recipes":[["m:indigo","m:pourpre"]]},
+ {"id":"m:orchidee-pourpre","type":"muldo","name":"Orchidée et Pourpre","gen":2,"img":"images/muldo/orchidee-pourpre.png","recipes":[["m:orchidee","m:pourpre"]]},
+ {"id":"m:amande","type":"muldo","name":"Amande","gen":3,"img":"images/muldo/amande.png","recipes":[["m:dore-pourpre","m:dore-indigo"],["m:dore-pourpre","m:dore-ebene"],["m:dore-pourpre","m:dore-orchidee"],["m:dore-orchidee","m:dore-indigo"],["m:dore-orchidee","m:dore-ebene"],["m:dore-ebene","m:dore-indigo"]]},
+ {"id":"m:roux","type":"muldo","name":"Roux","gen":3,"img":"images/muldo/roux.png","recipes":[["m:indigo-pourpre","m:ebene-orchidee"],["m:ebene-pourpre","m:indigo-orchidee"],["m:orchidee-pourpre","m:ebene-indigo"]]},
+ {"id":"m:dore-amande","type":"muldo","name":"Doré et Amande","gen":4,"img":"images/muldo/dore-amande.png","recipes":[["m:dore","m:amande"]]},
+ {"id":"m:ebene-amande","type":"muldo","name":"Ébène et Amande","gen":4,"img":"images/muldo/ebene-amande.png","recipes":[["m:ebene","m:amande"]]},
+ {"id":"m:indigo-amande","type":"muldo","name":"Indigo et Amande","gen":4,"img":"images/muldo/indigo-amande.png","recipes":[["m:indigo","m:amande"]]},
+ {"id":"m:orchidee-amande","type":"muldo","name":"Orchidée et Amande","gen":4,"img":"images/muldo/orchidee-amande.png","recipes":[["m:orchidee","m:amande"]]},
+ {"id":"m:pourpre-amande","type":"muldo","name":"Pourpre et Amande","gen":4,"img":"images/muldo/pourpre-amande.png","recipes":[["m:pourpre","m:amande"]]},
+ {"id":"m:roux-amande","type":"muldo","name":"Roux et Amande","gen":4,"img":"images/muldo/roux-amande.png","recipes":[["m:roux","m:amande"]]},
+ {"id":"m:roux-dore","type":"muldo","name":"Roux et Doré","gen":4,"img":"images/muldo/roux-dore.png","recipes":[["m:roux","m:dore"]]},
+ {"id":"m:roux-ebene","type":"muldo","name":"Roux et Ébène","gen":4,"img":"images/muldo/roux-ebene.png","recipes":[["m:roux","m:ebene"]]},
+ {"id":"m:roux-indigo","type":"muldo","name":"Roux et Indigo","gen":4,"img":"images/muldo/roux-indigo.png","recipes":[["m:roux","m:indigo"]]},
+ {"id":"m:roux-orchidee","type":"muldo","name":"Roux et Orchidée","gen":4,"img":"images/muldo/roux-orchidee.png","recipes":[["m:roux","m:orchidee"]]},
+ {"id":"m:roux-pourpre","type":"muldo","name":"Roux et Pourpre","gen":4,"img":"images/muldo/roux-pourpre.png","recipes":[["m:roux","m:pourpre"]]},
+ {"id":"m:ivoire","type":"muldo","name":"Ivoire","gen":5,"img":"images/muldo/ivoire.png","recipes":[["m:roux-dore","m:ebene-amande"],["m:roux-dore","m:indigo-amande"],["m:roux-dore","m:orchidee-amande"],["m:roux-dore","m:pourpre-amande"],["m:roux-amande","m:ebene-amande"],["m:roux-amande","m:pourpre-amande"],["m:roux-amande","m:indigo-amande"],["m:roux-amande","m:orchidee-amande"]]},
+ {"id":"m:turquoise","type":"muldo","name":"Turquoise","gen":5,"img":"images/muldo/turquoise.png","recipes":[["m:dore-amande","m:roux-ebene"],["m:dore-amande","m:roux-orchidee"],["m:dore-amande","m:roux-pourpre"],["m:dore-amande","m:roux-indigo"],["m:roux-amande","m:roux-ebene"],["m:roux-amande","m:roux-indigo"],["m:roux-amande","m:roux-orchidee"],["m:roux-amande","m:roux-pourpre"]]},
+ {"id":"m:amande-ivoire","type":"muldo","name":"Amande et Ivoire","gen":6,"img":"images/muldo/amande-ivoire.png","recipes":[["m:amande","m:ivoire"]]},
+ {"id":"m:dore-ivoire","type":"muldo","name":"Doré et Ivoire","gen":6,"img":"images/muldo/dore-ivoire.png","recipes":[["m:dore","m:ivoire"]]},
+ {"id":"m:ebene-ivoire","type":"muldo","name":"Ébène et Ivoire","gen":6,"img":"images/muldo/ebene-ivoire.png","recipes":[["m:ebene","m:ivoire"]]},
+ {"id":"m:indigo-ivoire","type":"muldo","name":"Indigo et Ivoire","gen":6,"img":"images/muldo/indigo-ivoire.png","recipes":[["m:indigo","m:ivoire"]]},
+ {"id":"m:orchidee-ivoire","type":"muldo","name":"Orchidée et Ivoire","gen":6,"img":"images/muldo/orchidee-ivoire.png","recipes":[["m:orchidee","m:ivoire"]]},
+ {"id":"m:pourpre-ivoire","type":"muldo","name":"Pourpre et Ivoire","gen":6,"img":"images/muldo/pourpre-ivoire.png","recipes":[["m:pourpre","m:ivoire"]]},
+ {"id":"m:roux-ivoire","type":"muldo","name":"Roux et Ivoire","gen":6,"img":"images/muldo/roux-ivoire.png","recipes":[["m:roux","m:ivoire"]]},
+ {"id":"m:turquoise-amande","type":"muldo","name":"Turquoise et Amande","gen":6,"img":"images/muldo/turquoise-amande.png","recipes":[["m:turquoise","m:amande"]]},
+ {"id":"m:turquoise-dore","type":"muldo","name":"Turquoise et Doré","gen":6,"img":"images/muldo/turquoise-dore.png","recipes":[["m:turquoise","m:dore"]]},
+ {"id":"m:turquoise-ebene","type":"muldo","name":"Turquoise et Ébène","gen":6,"img":"images/muldo/turquoise-ebene.png","recipes":[["m:turquoise","m:ebene"]]},
+ {"id":"m:turquoise-indigo","type":"muldo","name":"Turquoise et Indigo","gen":6,"img":"images/muldo/turquoise-indigo.png","recipes":[["m:turquoise","m:indigo"]]},
+ {"id":"m:turquoise-ivoire","type":"muldo","name":"Turquoise et Ivoire","gen":6,"img":"images/muldo/turquoise-ivoire.png","recipes":[["m:turquoise","m:ivoire"]]},
+ {"id":"m:turquoise-orchidee","type":"muldo","name":"Turquoise et Orchidée","gen":6,"img":"images/muldo/turquoise-orchidee.png","recipes":[["m:turquoise","m:orchidee"]]},
+ {"id":"m:turquoise-pourpre","type":"muldo","name":"Turquoise et Pourpre","gen":6,"img":"images/muldo/turquoise-pourpre.png","recipes":[["m:turquoise","m:pourpre"]]},
+ {"id":"m:turquoise-roux","type":"muldo","name":"Turquoise et Roux","gen":6,"img":"images/muldo/turquoise-roux.png","recipes":[["m:turquoise","m:roux"]]},
+ {"id":"m:emeraude","type":"muldo","name":"Émeraude","gen":7,"img":"images/muldo/emeraude.png","recipes":[["m:turquoise-ivoire","m:turquoise-dore"],["m:turquoise-ivoire","m:turquoise-roux"],["m:turquoise-ivoire","m:amande-ivoire"],["m:turquoise-ivoire","m:dore-ivoire"],["m:turquoise-ivoire","m:turquoise-amande"],["m:turquoise-amande","m:roux-ivoire"],["m:turquoise-amande","m:dore-ivoire"],["m:dore-ivoire","m:turquoise-roux"]]},
+ {"id":"m:prune","type":"muldo","name":"Prune","gen":7,"img":"images/muldo/prune.png","recipes":[["m:ebene-ivoire","m:turquoise-pourpre"],["m:indigo-ivoire","m:turquoise-orchidee"],["m:orchidee-ivoire","m:turquoise-indigo"],["m:pourpre-ivoire","m:turquoise-ebene"]]},
+ {"id":"m:amande-emeraude","type":"muldo","name":"Amande et Émeraude","gen":8,"img":"images/muldo/amande-emeraude.png","recipes":[["m:amande","m:emeraude"]]},
+ {"id":"m:dore-emeraude","type":"muldo","name":"Doré et Émeraude","gen":8,"img":"images/muldo/dore-emeraude.png","recipes":[["m:dore","m:emeraude"]]},
+ {"id":"m:ebene-emeraude","type":"muldo","name":"Ébène et Émeraude","gen":8,"img":"images/muldo/ebene-emeraude.png","recipes":[["m:ebene","m:emeraude"]]},
+ {"id":"m:indigo-emeraude","type":"muldo","name":"Indigo et Émeraude","gen":8,"img":"images/muldo/indigo-emeraude.png","recipes":[["m:indigo","m:emeraude"]]},
+ {"id":"m:ivoire-emeraude","type":"muldo","name":"Ivoire et Émeraude","gen":8,"img":"images/muldo/ivoire-emeraude.png","recipes":[["m:ivoire","m:emeraude"]]},
+ {"id":"m:orchidee-emeraude","type":"muldo","name":"Orchidée et Émeraude","gen":8,"img":"images/muldo/orchidee-emeraude.png","recipes":[["m:orchidee","m:emeraude"]]},
+ {"id":"m:pourpre-emeraude","type":"muldo","name":"Pourpre et Émeraude","gen":8,"img":"images/muldo/pourpre-emeraude.png","recipes":[["m:pourpre","m:emeraude"]]},
+ {"id":"m:prune-amande","type":"muldo","name":"Prune et Amande","gen":8,"img":"images/muldo/prune-amande.png","recipes":[["m:prune","m:amande"]]},
+ {"id":"m:prune-dore","type":"muldo","name":"Prune et Doré","gen":8,"img":"images/muldo/prune-dore.png","recipes":[["m:prune","m:dore"]]},
+ {"id":"m:prune-ebene","type":"muldo","name":"Prune et Ébène","gen":8,"img":"images/muldo/prune-ebene.png","recipes":[["m:prune","m:ebene"]]},
+ {"id":"m:prune-emeraude","type":"muldo","name":"Prune et Émeraude","gen":8,"img":"images/muldo/prune-emeraude.png","recipes":[["m:prune","m:emeraude"]]},
+ {"id":"m:prune-indigo","type":"muldo","name":"Prune et Indigo","gen":8,"img":"images/muldo/prune-indigo.png","recipes":[["m:prune","m:indigo"]]},
+ {"id":"m:prune-ivoire","type":"muldo","name":"Prune et Ivoire","gen":8,"img":"images/muldo/prune-ivoire.png","recipes":[["m:prune","m:ivoire"]]},
+ {"id":"m:prune-orchidee","type":"muldo","name":"Prune et Orchidée","gen":8,"img":"images/muldo/prune-orchidee.png","recipes":[["m:prune","m:orchidee"]]},
+ {"id":"m:prune-pourpre","type":"muldo","name":"Prune et Pourpre","gen":8,"img":"images/muldo/prune-pourpre.png","recipes":[["m:prune","m:pourpre"]]},
+ {"id":"m:prune-roux","type":"muldo","name":"Prune et Roux","gen":8,"img":"images/muldo/prune-roux.png","recipes":[["m:prune","m:roux"]]},
+ {"id":"m:prune-turquoise","type":"muldo","name":"Prune et Turquoise","gen":8,"img":"images/muldo/prune-turquoise.png","recipes":[["m:prune","m:turquoise"]]},
+ {"id":"m:roux-emeraude","type":"muldo","name":"Roux et Émeraude","gen":8,"img":"images/muldo/roux-emeraude.png","recipes":[["m:roux","m:emeraude"]]},
+ {"id":"m:turquoise-emeraude","type":"muldo","name":"Turquoise et Émeraude","gen":8,"img":"images/muldo/turquoise-emeraude.png","recipes":[["m:turquoise","m:emeraude"]]},
+ {"id":"m:aigue-marine","type":"muldo","name":"Aigue-marine","gen":9,"img":"images/muldo/aigue-marine.png","recipes":[["m:prune-pourpre","m:roux-emeraude"],["m:prune-orchidee","m:amande-emeraude"],["m:prune-indigo","m:ivoire-emeraude"],["m:prune-ebene","m:turquoise-emeraude"],["m:prune-dore","m:turquoise-emeraude"]]},
+ {"id":"m:ambre","type":"muldo","name":"Ambre","gen":9,"img":"images/muldo/ambre.png","recipes":[["m:pourpre-emeraude","m:roux-emeraude"],["m:orchidee-emeraude","m:amande-emeraude"],["m:indigo-emeraude","m:ivoire-emeraude"],["m:ebene-emeraude","m:turquoise-emeraude"],["m:dore-emeraude","m:prune-emeraude"]]},
+ {"id":"m:azur","type":"muldo","name":"Azur","gen":9,"img":"images/muldo/azur.png","recipes":[["m:pourpre-emeraude","m:prune-roux"],["m:orchidee-emeraude","m:prune-amande"],["m:indigo-emeraude","m:prune-ivoire"],["m:ebene-emeraude","m:prune-turquoise"],["m:dore-emeraude","m:prune-ivoire"]]},
+ {"id":"m:corail","type":"muldo","name":"Corail","gen":9,"img":"images/muldo/corail.png","recipes":[["m:prune-pourpre","m:prune-roux"],["m:prune-orchidee","m:prune-amande"],["m:prune-indigo","m:prune-ivoire"],["m:prune-ebene","m:prune-turquoise"],["m:prune-dore","m:prune-emeraude"]]},
+ {"id":"m:aigue-marine-amande","type":"muldo","name":"Aigue-marine et Amande","gen":10,"img":"images/muldo/aigue-marine-amande.png","recipes":[["m:aigue-marine","m:amande"]]},
+ {"id":"m:aigue-marine-dore","type":"muldo","name":"Aigue-marine et Doré","gen":10,"img":"images/muldo/aigue-marine-dore.png","recipes":[["m:aigue-marine","m:dore"]]},
+ {"id":"m:aigue-marine-ebene","type":"muldo","name":"Aigue-marine et Ébène","gen":10,"img":"images/muldo/aigue-marine-ebene.png","recipes":[["m:aigue-marine","m:ebene"]]},
+ {"id":"m:aigue-marine-emeraude","type":"muldo","name":"Aigue-marine et Émeraude","gen":10,"img":"images/muldo/aigue-marine-emeraude.png","recipes":[["m:aigue-marine","m:emeraude"]]},
+ {"id":"m:aigue-marine-indigo","type":"muldo","name":"Aigue-marine et Indigo","gen":10,"img":"images/muldo/aigue-marine-indigo.png","recipes":[["m:aigue-marine","m:indigo"]]},
+ {"id":"m:aigue-marine-ivoire","type":"muldo","name":"Aigue-marine et Ivoire","gen":10,"img":"images/muldo/aigue-marine-ivoire.png","recipes":[["m:aigue-marine","m:ivoire"]]},
+ {"id":"m:aigue-marine-orchidee","type":"muldo","name":"Aigue-marine et Orchidée","gen":10,"img":"images/muldo/aigue-marine-orchidee.png","recipes":[["m:aigue-marine","m:orchidee"]]},
+ {"id":"m:aigue-marine-pourpre","type":"muldo","name":"Aigue-marine et Pourpre","gen":10,"img":"images/muldo/aigue-marine-pourpre.png","recipes":[["m:aigue-marine","m:pourpre"]]},
+ {"id":"m:aigue-marine-prune","type":"muldo","name":"Aigue-marine et Prune","gen":10,"img":"images/muldo/aigue-marine-prune.png","recipes":[["m:aigue-marine","m:prune"]]},
+ {"id":"m:aigue-marine-roux","type":"muldo","name":"Aigue-marine et Roux","gen":10,"img":"images/muldo/aigue-marine-roux.png","recipes":[["m:aigue-marine","m:roux"]]},
+ {"id":"m:aigue-marine-turquoise","type":"muldo","name":"Aigue-marine et Turquoise","gen":10,"img":"images/muldo/aigue-marine-turquoise.png","recipes":[["m:aigue-marine","m:turquoise"]]},
+ {"id":"m:ambre-aigue-marine","type":"muldo","name":"Ambre et Aigue-marine","gen":10,"img":"images/muldo/ambre-aigue-marine.png","recipes":[["m:ambre","m:aigue-marine"]]},
+ {"id":"m:ambre-amande","type":"muldo","name":"Ambre et Amande","gen":10,"img":"images/muldo/ambre-amande.png","recipes":[["m:ambre","m:amande"]]},
+ {"id":"m:ambre-azur","type":"muldo","name":"Ambre et Azur","gen":10,"img":"images/muldo/ambre-azur.png","recipes":[["m:ambre","m:azur"]]},
+ {"id":"m:ambre-corail","type":"muldo","name":"Ambre et Corail","gen":10,"img":"images/muldo/ambre-corail.png","recipes":[["m:ambre","m:corail"]]},
+ {"id":"m:ambre-dore","type":"muldo","name":"Ambre et Doré","gen":10,"img":"images/muldo/ambre-dore.png","recipes":[["m:ambre","m:dore"]]},
+ {"id":"m:ambre-ebene","type":"muldo","name":"Ambre et Ébène","gen":10,"img":"images/muldo/ambre-ebene.png","recipes":[["m:ambre","m:ebene"]]},
+ {"id":"m:ambre-emeraude","type":"muldo","name":"Ambre et Émeraude","gen":10,"img":"images/muldo/ambre-emeraude.png","recipes":[["m:ambre","m:emeraude"]]},
+ {"id":"m:ambre-indigo","type":"muldo","name":"Ambre et Indigo","gen":10,"img":"images/muldo/ambre-indigo.png","recipes":[["m:ambre","m:indigo"]]},
+ {"id":"m:ambre-ivoire","type":"muldo","name":"Ambre et Ivoire","gen":10,"img":"images/muldo/ambre-ivoire.png","recipes":[["m:ambre","m:ivoire"]]},
+ {"id":"m:ambre-orchidee","type":"muldo","name":"Ambre et Orchidée","gen":10,"img":"images/muldo/ambre-orchidee.png","recipes":[["m:ambre","m:orchidee"]]},
+ {"id":"m:ambre-pourpre","type":"muldo","name":"Ambre et Pourpre","gen":10,"img":"images/muldo/ambre-pourpre.png","recipes":[["m:ambre","m:pourpre"]]},
+ {"id":"m:ambre-prune","type":"muldo","name":"Ambre et Prune","gen":10,"img":"images/muldo/ambre-prune.png","recipes":[["m:ambre","m:prune"]]},
+ {"id":"m:ambre-roux","type":"muldo","name":"Ambre et Roux","gen":10,"img":"images/muldo/ambre-roux.png","recipes":[["m:ambre","m:roux"]]},
+ {"id":"m:ambre-turquoise","type":"muldo","name":"Ambre et Turquoise","gen":10,"img":"images/muldo/ambre-turquoise.png","recipes":[["m:ambre","m:turquoise"]]},
+ {"id":"m:azur-aigue-marine","type":"muldo","name":"Azur et Aigue-marine","gen":10,"img":"images/muldo/azur-aigue-marine.png","recipes":[["m:azur","m:aigue-marine"]]},
+ {"id":"m:azur-amande","type":"muldo","name":"Azur et Amande","gen":10,"img":"images/muldo/azur-amande.png","recipes":[["m:azur","m:amande"]]},
+ {"id":"m:azur-dore","type":"muldo","name":"Azur et Doré","gen":10,"img":"images/muldo/azur-dore.png","recipes":[["m:azur","m:dore"]]},
+ {"id":"m:azur-ebene","type":"muldo","name":"Azur et Ébène","gen":10,"img":"images/muldo/azur-ebene.png","recipes":[["m:azur","m:ebene"]]},
+ {"id":"m:azur-emeraude","type":"muldo","name":"Azur et Émeraude","gen":10,"img":"images/muldo/azur-emeraude.png","recipes":[["m:azur","m:emeraude"]]},
+ {"id":"m:azur-indigo","type":"muldo","name":"Azur et Indigo","gen":10,"img":"images/muldo/azur-indigo.png","recipes":[["m:azur","m:indigo"]]},
+ {"id":"m:azur-ivoire","type":"muldo","name":"Azur et Ivoire","gen":10,"img":"images/muldo/azur-ivoire.png","recipes":[["m:azur","m:ivoire"]]},
+ {"id":"m:azur-orchidee","type":"muldo","name":"Azur et Orchidée","gen":10,"img":"images/muldo/azur-orchidee.png","recipes":[["m:azur","m:orchidee"]]},
+ {"id":"m:azur-pourpre","type":"muldo","name":"Azur et Pourpre","gen":10,"img":"images/muldo/azur-pourpre.png","recipes":[["m:azur","m:pourpre"]]},
+ {"id":"m:azur-prune","type":"muldo","name":"Azur et Prune","gen":10,"img":"images/muldo/azur-prune.png","recipes":[["m:azur","m:prune"]]},
+ {"id":"m:azur-roux","type":"muldo","name":"Azur et Roux","gen":10,"img":"images/muldo/azur-roux.png","recipes":[["m:azur","m:roux"]]},
+ {"id":"m:azur-turquoise","type":"muldo","name":"Azur et Turquoise","gen":10,"img":"images/muldo/azur-turquoise.png","recipes":[["m:azur","m:turquoise"]]},
+ {"id":"m:corail-aigue-marine","type":"muldo","name":"Corail et Aigue-marine","gen":10,"img":"images/muldo/corail-aigue-marine.png","recipes":[["m:corail","m:aigue-marine"]]},
+ {"id":"m:corail-amande","type":"muldo","name":"Corail et Amande","gen":10,"img":"images/muldo/corail-amande.png","recipes":[["m:corail","m:amande"]]},
+ {"id":"m:corail-azur","type":"muldo","name":"Corail et Azur","gen":10,"img":"images/muldo/corail-azur.png","recipes":[["m:corail","m:azur"]]},
+ {"id":"m:corail-dore","type":"muldo","name":"Corail et Doré","gen":10,"img":"images/muldo/corail-dore.png","recipes":[["m:corail","m:dore"]]},
+ {"id":"m:corail-ebene","type":"muldo","name":"Corail et Ébène","gen":10,"img":"images/muldo/corail-ebene.png","recipes":[["m:corail","m:ebene"]]},
+ {"id":"m:corail-emeraude","type":"muldo","name":"Corail et Émeraude","gen":10,"img":"images/muldo/corail-emeraude.png","recipes":[["m:corail","m:emeraude"]]},
+ {"id":"m:corail-indigo","type":"muldo","name":"Corail et Indigo","gen":10,"img":"images/muldo/corail-indigo.png","recipes":[["m:corail","m:indigo"]]},
+ {"id":"m:corail-ivoire","type":"muldo","name":"Corail et Ivoire","gen":10,"img":"images/muldo/corail-ivoire.png","recipes":[["m:corail","m:ivoire"]]},
+ {"id":"m:corail-orchidee","type":"muldo","name":"Corail et Orchidée","gen":10,"img":"images/muldo/corail-orchidee.png","recipes":[["m:corail","m:orchidee"]]},
+ {"id":"m:corail-pourpre","type":"muldo","name":"Corail et Pourpre","gen":10,"img":"images/muldo/corail-pourpre.png","recipes":[["m:corail","m:pourpre"]]},
+ {"id":"m:corail-prune","type":"muldo","name":"Corail et Prune","gen":10,"img":"images/muldo/corail-prune.png","recipes":[["m:corail","m:prune"]]},
+ {"id":"m:corail-roux","type":"muldo","name":"Corail et Roux","gen":10,"img":"images/muldo/corail-roux.png","recipes":[["m:corail","m:roux"]]},
+ {"id":"m:corail-turquoise","type":"muldo","name":"Corail et Turquoise","gen":10,"img":"images/muldo/corail-turquoise.png","recipes":[["m:corail","m:turquoise"]]},
+ {"id":"v:ebene","type":"volkorne","name":"Ébène","gen":1,"img":"images/volkorne/ebene.png","recipes":null},
+ {"id":"v:indigo","type":"volkorne","name":"Indigo","gen":1,"img":"images/volkorne/indigo.png","recipes":null},
+ {"id":"v:orchidee","type":"volkorne","name":"Orchidée","gen":1,"img":"images/volkorne/orchidee.png","recipes":null},
+ {"id":"v:pourpre","type":"volkorne","name":"Pourpre","gen":1,"img":"images/volkorne/pourpre.png","recipes":null},
+ {"id":"v:indigo-ebene","type":"volkorne","name":"Indigo et Ébène","gen":2,"img":"images/volkorne/indigo-ebene.png","recipes":[["v:indigo","v:ebene"]]},
+ {"id":"v:orchidee-ebene","type":"volkorne","name":"Orchidée et Ébène","gen":2,"img":"images/volkorne/orchidee-ebene.png","recipes":[["v:orchidee","v:ebene"]]},
+ {"id":"v:orchidee-indigo","type":"volkorne","name":"Orchidée et Indigo","gen":2,"img":"images/volkorne/orchidee-indigo.png","recipes":[["v:orchidee","v:indigo"]]},
+ {"id":"v:pourpre-ebene","type":"volkorne","name":"Pourpre et Ébène","gen":2,"img":"images/volkorne/pourpre-ebene.png","recipes":[["v:pourpre","v:ebene"]]},
+ {"id":"v:pourpre-indigo","type":"volkorne","name":"Pourpre et Indigo","gen":2,"img":"images/volkorne/pourpre-indigo.png","recipes":[["v:pourpre","v:indigo"]]},
+ {"id":"v:pourpre-orchidee","type":"volkorne","name":"Pourpre et Orchidée","gen":2,"img":"images/volkorne/pourpre-orchidee.png","recipes":[["v:pourpre","v:orchidee"]]},
+ {"id":"v:amande","type":"volkorne","name":"Amande","gen":3,"img":"images/volkorne/amande.png","recipes":[["v:pourpre-ebene","v:orchidee-ebene"],["v:pourpre-ebene","v:indigo-ebene"],["v:indigo-ebene","v:orchidee-ebene"]]},
+ {"id":"v:roux","type":"volkorne","name":"Roux","gen":3,"img":"images/volkorne/roux.png","recipes":[["v:pourpre-orchidee","v:pourpre-indigo"],["v:pourpre-orchidee","v:pourpre-ebene"],["v:pourpre-ebene","v:pourpre-indigo"]]},
+ {"id":"v:amande-ebene","type":"volkorne","name":"Amande et Ébène","gen":4,"img":"images/volkorne/amande-ebene.png","recipes":[["v:amande","v:ebene"]]},
+ {"id":"v:amande-indigo","type":"volkorne","name":"Amande et Indigo","gen":4,"img":"images/volkorne/amande-indigo.png","recipes":[["v:amande","v:indigo"]]},
+ {"id":"v:amande-ivoire","type":"volkorne","name":"Amande et Ivoire","gen":4,"img":"images/volkorne/amande-ivoire.png","recipes":[["v:amande","v:ivoire"]]},
+ {"id":"v:amande-orchidee","type":"volkorne","name":"Amande et Orchidée","gen":4,"img":"images/volkorne/amande-orchidee.png","recipes":[["v:amande","v:orchidee"]]},
+ {"id":"v:amande-pourpre","type":"volkorne","name":"Amande et Pourpre","gen":4,"img":"images/volkorne/amande-pourpre.png","recipes":[["v:amande","v:pourpre"]]},
+ {"id":"v:amande-roux","type":"volkorne","name":"Amande et Roux","gen":4,"img":"images/volkorne/amande-roux.png","recipes":[["v:amande","v:roux"]]},
+ {"id":"v:amande-turquoise","type":"volkorne","name":"Amande et Turquoise","gen":4,"img":"images/volkorne/amande-turquoise.png","recipes":[["v:amande","v:turquoise"]]},
+ {"id":"v:ivoire-ebene","type":"volkorne","name":"Ivoire et Ébène","gen":4,"img":"images/volkorne/ivoire-ebene.png","recipes":[["v:ivoire","v:ebene"]]},
+ {"id":"v:ivoire-indigo","type":"volkorne","name":"Ivoire et Indigo","gen":4,"img":"images/volkorne/ivoire-indigo.png","recipes":[["v:ivoire","v:indigo"]]},
+ {"id":"v:ivoire-orchidee","type":"volkorne","name":"Ivoire et Orchidée","gen":4,"img":"images/volkorne/ivoire-orchidee.png","recipes":[["v:ivoire","v:orchidee"]]},
+ {"id":"v:ivoire-pourpre","type":"volkorne","name":"Ivoire et Pourpre","gen":4,"img":"images/volkorne/ivoire-pourpre.png","recipes":[["v:ivoire","v:pourpre"]]},
+ {"id":"v:ivoire-turquoise","type":"volkorne","name":"Ivoire et Turquoise","gen":4,"img":"images/volkorne/ivoire-turquoise.png","recipes":[["v:ivoire","v:turquoise"]]},
+ {"id":"v:roux-ebene","type":"volkorne","name":"Roux et Ébène","gen":4,"img":"images/volkorne/roux-ebene.png","recipes":[["v:roux","v:ebene"]]},
+ {"id":"v:roux-indigo","type":"volkorne","name":"Roux et Indigo","gen":4,"img":"images/volkorne/roux-indigo.png","recipes":[["v:roux","v:indigo"]]},
+ {"id":"v:roux-ivoire","type":"volkorne","name":"Roux et Ivoire","gen":4,"img":"images/volkorne/roux-ivoire.png","recipes":[["v:roux","v:ivoire"]]},
+ {"id":"v:roux-orchidee","type":"volkorne","name":"Roux et Orchidée","gen":4,"img":"images/volkorne/roux-orchidee.png","recipes":[["v:roux","v:orchidee"]]},
+ {"id":"v:roux-pourpre","type":"volkorne","name":"Roux et Pourpre","gen":4,"img":"images/volkorne/roux-pourpre.png","recipes":[["v:roux","v:pourpre"]]},
+ {"id":"v:roux-turquoise","type":"volkorne","name":"Roux et Turquoise","gen":4,"img":"images/volkorne/roux-turquoise.png","recipes":[["v:roux","v:turquoise"]]},
+ {"id":"v:turquoise-ebene","type":"volkorne","name":"Turquoise et Ébène","gen":4,"img":"images/volkorne/turquoise-ebene.png","recipes":[["v:turquoise","v:ebene"]]},
+ {"id":"v:turquoise-indigo","type":"volkorne","name":"Turquoise et Indigo","gen":4,"img":"images/volkorne/turquoise-indigo.png","recipes":[["v:turquoise","v:indigo"]]},
+ {"id":"v:turquoise-orchidee","type":"volkorne","name":"Turquoise et Orchidée","gen":4,"img":"images/volkorne/turquoise-orchidee.png","recipes":[["v:turquoise","v:orchidee"]]},
+ {"id":"v:turquoise-pourpre","type":"volkorne","name":"Turquoise et Pourpre","gen":4,"img":"images/volkorne/turquoise-pourpre.png","recipes":[["v:turquoise","v:pourpre"]]},
+ {"id":"v:ivoire","type":"volkorne","name":"Ivoire","gen":5,"img":"images/volkorne/ivoire.png","recipes":[["v:pourpre-indigo","v:indigo-ebene"],["v:pourpre-indigo","v:orchidee-indigo"],["v:orchidee-indigo","v:indigo-ebene"]]},
+ {"id":"v:turquoise","type":"volkorne","name":"Turquoise","gen":5,"img":"images/volkorne/turquoise.png","recipes":[["v:pourpre-orchidee","v:orchidee-ebene"],["v:pourpre-orchidee","v:orchidee-indigo"],["v:orchidee-indigo","v:orchidee-ebene"]]},
+ {"id":"v:emeraude-amande","type":"volkorne","name":"Émeraude et Amande","gen":6,"img":"images/volkorne/emeraude-amande.png","recipes":[["v:emeraude","v:amande"]]},
+ {"id":"v:emeraude-ebene","type":"volkorne","name":"Émeraude et Ébène","gen":6,"img":"images/volkorne/emeraude-ebene.png","recipes":[["v:emeraude","v:ebene"]]},
+ {"id":"v:emeraude-indigo","type":"volkorne","name":"Émeraude et Indigo","gen":6,"img":"images/volkorne/emeraude-indigo.png","recipes":[["v:emeraude","v:indigo"]]},
+ {"id":"v:emeraude-ivoire","type":"volkorne","name":"Émeraude et Ivoire","gen":6,"img":"images/volkorne/emeraude-ivoire.png","recipes":[["v:emeraude","v:ivoire"]]},
+ {"id":"v:emeraude-orchidee","type":"volkorne","name":"Émeraude et Orchidée","gen":6,"img":"images/volkorne/emeraude-orchidee.png","recipes":[["v:emeraude","v:orchidee"]]},
+ {"id":"v:emeraude-pourpre","type":"volkorne","name":"Émeraude et Pourpre","gen":6,"img":"images/volkorne/emeraude-pourpre.png","recipes":[["v:emeraude","v:pourpre"]]},
+ {"id":"v:emeraude-roux","type":"volkorne","name":"Émeraude et Roux","gen":6,"img":"images/volkorne/emeraude-roux.png","recipes":[["v:emeraude","v:roux"]]},
+ {"id":"v:emeraude-turquoise","type":"volkorne","name":"Émeraude et Turquoise","gen":6,"img":"images/volkorne/emeraude-turquoise.png","recipes":[["v:emeraude","v:turquoise"]]},
+ {"id":"v:prune-amande","type":"volkorne","name":"Prune et Amande","gen":6,"img":"images/volkorne/prune-amande.png","recipes":[["v:prune","v:amande"]]},
+ {"id":"v:prune-ebene","type":"volkorne","name":"Prune et Ébène","gen":6,"img":"images/volkorne/prune-ebene.png","recipes":[["v:prune","v:ebene"]]},
+ {"id":"v:prune-emeraude","type":"volkorne","name":"Prune et Émeraude","gen":6,"img":"images/volkorne/prune-emeraude.png","recipes":[["v:prune","v:emeraude"]]},
+ {"id":"v:prune-indigo","type":"volkorne","name":"Prune et Indigo","gen":6,"img":"images/volkorne/prune-indigo.png","recipes":[["v:prune","v:indigo"]]},
+ {"id":"v:prune-ivoire","type":"volkorne","name":"Prune et Ivoire","gen":6,"img":"images/volkorne/prune-ivoire.png","recipes":[["v:prune","v:ivoire"]]},
+ {"id":"v:prune-orchidee","type":"volkorne","name":"Prune et Orchidée","gen":6,"img":"images/volkorne/prune-orchidee.png","recipes":[["v:prune","v:orchidee"]]},
+ {"id":"v:prune-pourpre","type":"volkorne","name":"Prune et Pourpre","gen":6,"img":"images/volkorne/prune-pourpre.png","recipes":[["v:prune","v:pourpre"]]},
+ {"id":"v:prune-roux","type":"volkorne","name":"Prune et Roux","gen":6,"img":"images/volkorne/prune-roux.png","recipes":[["v:prune","v:roux"]]},
+ {"id":"v:prune-turquoise","type":"volkorne","name":"Prune et Turquoise","gen":6,"img":"images/volkorne/prune-turquoise.png","recipes":[["v:prune","v:turquoise"]]},
+ {"id":"v:dore","type":"volkorne","name":"Doré","gen":7,"img":"images/volkorne/dore.png","recipes":[["v:prune-pourpre","v:emeraude-roux"],["v:prune-orchidee","v:emeraude-turquoise"],["v:prune-indigo","v:emeraude-ivoire"],["v:prune-ebene","v:emeraude-amande"],["v:prune-amande","v:emeraude-ebene"],["v:prune-turquoise","v:emeraude-orchidee"],["v:prune-roux","v:emeraude-pourpre"],["v:prune-ivoire","v:emeraude-indigo"]]},
+ {"id":"v:emeraude","type":"volkorne","name":"Émeraude","gen":7,"img":"images/volkorne/emeraude.png","recipes":[["v:ivoire-turquoise","v:ivoire-orchidee"],["v:ivoire-turquoise","v:ivoire-indigo"],["v:ivoire-turquoise","v:ivoire-ebene"],["v:ivoire-turquoise","v:ivoire-pourpre"],["v:ivoire-turquoise","v:amande-ivoire"],["v:ivoire-turquoise","v:roux-ivoire"],["v:ivoire-turquoise","v:roux-turquoise"],["v:ivoire-turquoise","v:turquoise-orchidee"],["v:ivoire-turquoise","v:turquoise-pourpre"],["v:ivoire-turquoise","v:turquoise-indigo"],["v:ivoire-turquoise","v:turquoise-ebene"],["v:ivoire-turquoise","v:amande-turquoise"]]},
+ {"id":"v:prune","type":"volkorne","name":"Prune","gen":7,"img":"images/volkorne/prune.png","recipes":[["v:amande-roux","v:amande-pourpre"],["v:amande-roux","v:amande-orchidee"],["v:amande-roux","v:amande-indigo"],["v:amande-roux","v:amande-ebene"],["v:amande-roux","v:amande-turquoise"],["v:amande-roux","v:amande-ivoire"],["v:amande-roux","v:roux-pourpre"],["v:amande-roux","v:roux-orchidee"],["v:amande-roux","v:roux-indigo"],["v:amande-roux","v:roux-ebene"],["v:amande-roux","v:roux-ivoire"],["v:amande-roux","v:roux-turquoise"]]},
+ {"id":"v:dore-amande","type":"volkorne","name":"Doré et Amande","gen":8,"img":"images/volkorne/dore-amande.png","recipes":[["v:dore","v:amande"]]},
+ {"id":"v:dore-ebene","type":"volkorne","name":"Doré et Ébène","gen":8,"img":"images/volkorne/dore-ebene.png","recipes":[["v:dore","v:ebene"]]},
+ {"id":"v:dore-emeraude","type":"volkorne","name":"Doré et Émeraude","gen":8,"img":"images/volkorne/dore-emeraude.png","recipes":[["v:dore","v:emeraude"]]},
+ {"id":"v:dore-indigo","type":"volkorne","name":"Doré et Indigo","gen":8,"img":"images/volkorne/dore-indigo.png","recipes":[["v:dore","v:indigo"]]},
+ {"id":"v:dore-ivoire","type":"volkorne","name":"Doré et Ivoire","gen":8,"img":"images/volkorne/dore-ivoire.png","recipes":[["v:dore","v:ivoire"]]},
+ {"id":"v:dore-orchidee","type":"volkorne","name":"Doré et Orchidée","gen":8,"img":"images/volkorne/dore-orchidee.png","recipes":[["v:dore","v:orchidee"]]},
+ {"id":"v:dore-pourpre","type":"volkorne","name":"Doré et Pourpre","gen":8,"img":"images/volkorne/dore-pourpre.png","recipes":[["v:dore","v:pourpre"]]},
+ {"id":"v:dore-prune","type":"volkorne","name":"Doré et Prune","gen":8,"img":"images/volkorne/dore-prune.png","recipes":[["v:dore","v:prune"]]},
+ {"id":"v:dore-roux","type":"volkorne","name":"Doré et Roux","gen":8,"img":"images/volkorne/dore-roux.png","recipes":[["v:dore","v:roux"]]},
+ {"id":"v:dore-turquoise","type":"volkorne","name":"Doré et Turquoise","gen":8,"img":"images/volkorne/dore-turquoise.png","recipes":[["v:dore","v:turquoise"]]},
+ {"id":"v:amethyste","type":"volkorne","name":"Améthyste","gen":9,"img":"images/volkorne/amethyste.png","recipes":[["v:dore-ebene","v:prune-emeraude"],["v:dore-emeraude","v:dore-ivoire"]]},
+ {"id":"v:jade","type":"volkorne","name":"Jade","gen":9,"img":"images/volkorne/jade.png","recipes":[["v:dore-pourpre","v:prune-emeraude"],["v:dore-prune","v:dore-roux"]]},
+ {"id":"v:rubis","type":"volkorne","name":"Rubis","gen":9,"img":"images/volkorne/rubis.png","recipes":[["v:dore-orchidee","v:prune-emeraude"],["v:dore-prune","v:dore-amande"]]},
+ {"id":"v:saphir","type":"volkorne","name":"Saphir","gen":9,"img":"images/volkorne/saphir.png","recipes":[["v:dore-indigo","v:prune-emeraude"],["v:dore-emeraude","v:dore-turquoise"]]},
+ {"id":"v:amethyste-amande","type":"volkorne","name":"Améthyste et Amande","gen":10,"img":"images/volkorne/amethyste-amande.png","recipes":[["v:amethyste","v:amande"]]},
+ {"id":"v:amethyste-dore","type":"volkorne","name":"Améthyste et Doré","gen":10,"img":"images/volkorne/amethyste-dore.png","recipes":[["v:amethyste","v:dore"]]},
+ {"id":"v:amethyste-ebene","type":"volkorne","name":"Améthyste et Ébène","gen":10,"img":"images/volkorne/amethyste-ebene.png","recipes":[["v:amethyste","v:ebene"]]},
+ {"id":"v:amethyste-emeraude","type":"volkorne","name":"Améthyste et Émeraude","gen":10,"img":"images/volkorne/amethyste-emeraude.png","recipes":[["v:amethyste","v:emeraude"]]},
+ {"id":"v:amethyste-indigo","type":"volkorne","name":"Améthyste et Indigo","gen":10,"img":"images/volkorne/amethyste-indigo.png","recipes":[["v:amethyste","v:indigo"]]},
+ {"id":"v:amethyste-ivoire","type":"volkorne","name":"Améthyste et Ivoire","gen":10,"img":"images/volkorne/amethyste-ivoire.png","recipes":[["v:amethyste","v:ivoire"]]},
+ {"id":"v:amethyste-orchidee","type":"volkorne","name":"Améthyste et Orchidée","gen":10,"img":"images/volkorne/amethyste-orchidee.png","recipes":[["v:amethyste","v:orchidee"]]},
+ {"id":"v:amethyste-pourpre","type":"volkorne","name":"Améthyste et Pourpre","gen":10,"img":"images/volkorne/amethyste-pourpre.png","recipes":[["v:amethyste","v:pourpre"]]},
+ {"id":"v:amethyste-prune","type":"volkorne","name":"Améthyste et Prune","gen":10,"img":"images/volkorne/amethyste-prune.png","recipes":[["v:amethyste","v:prune"]]},
+ {"id":"v:amethyste-roux","type":"volkorne","name":"Améthyste et Roux","gen":10,"img":"images/volkorne/amethyste-roux.png","recipes":[["v:amethyste","v:roux"]]},
+ {"id":"v:amethyste-turquoise","type":"volkorne","name":"Améthyste et Turquoise","gen":10,"img":"images/volkorne/amethyste-turquoise.png","recipes":[["v:amethyste","v:turquoise"]]},
+ {"id":"v:jade-amande","type":"volkorne","name":"Jade et Amande","gen":10,"img":"images/volkorne/jade-amande.png","recipes":[["v:jade","v:amande"]]},
+ {"id":"v:jade-amethyste","type":"volkorne","name":"Jade et Améthyste","gen":10,"img":"images/volkorne/jade-amethyste.png","recipes":[["v:jade","v:amethyste"]]},
+ {"id":"v:jade-dore","type":"volkorne","name":"Jade et Doré","gen":10,"img":"images/volkorne/jade-dore.png","recipes":[["v:jade","v:dore"]]},
+ {"id":"v:jade-ebene","type":"volkorne","name":"Jade et Ébène","gen":10,"img":"images/volkorne/jade-ebene.png","recipes":[["v:jade","v:ebene"]]},
+ {"id":"v:jade-emeraude","type":"volkorne","name":"Jade et Émeraude","gen":10,"img":"images/volkorne/jade-emeraude.png","recipes":[["v:jade","v:emeraude"]]},
+ {"id":"v:jade-indigo","type":"volkorne","name":"Jade et Indigo","gen":10,"img":"images/volkorne/jade-indigo.png","recipes":[["v:jade","v:indigo"]]},
+ {"id":"v:jade-ivoire","type":"volkorne","name":"Jade et Ivoire","gen":10,"img":"images/volkorne/jade-ivoire.png","recipes":[["v:jade","v:ivoire"]]},
+ {"id":"v:jade-orchidee","type":"volkorne","name":"Jade et Orchidée","gen":10,"img":"images/volkorne/jade-orchidee.png","recipes":[["v:jade","v:orchidee"]]},
+ {"id":"v:jade-pourpre","type":"volkorne","name":"Jade et Pourpre","gen":10,"img":"images/volkorne/jade-pourpre.png","recipes":[["v:jade","v:pourpre"]]},
+ {"id":"v:jade-prune","type":"volkorne","name":"Jade et Prune","gen":10,"img":"images/volkorne/jade-prune.png","recipes":[["v:jade","v:prune"]]},
+ {"id":"v:jade-roux","type":"volkorne","name":"Jade et Roux","gen":10,"img":"images/volkorne/jade-roux.png","recipes":[["v:jade","v:roux"]]},
+ {"id":"v:jade-rubis","type":"volkorne","name":"Jade et Rubis","gen":10,"img":"images/volkorne/jade-rubis.png","recipes":[["v:jade","v:rubis"]]},
+ {"id":"v:jade-saphir","type":"volkorne","name":"Jade et Saphir","gen":10,"img":"images/volkorne/jade-saphir.png","recipes":[["v:jade","v:saphir"]]},
+ {"id":"v:jade-turquoise","type":"volkorne","name":"Jade et Turquoise","gen":10,"img":"images/volkorne/jade-turquoise.png","recipes":[["v:jade","v:turquoise"]]},
+ {"id":"v:rubis-amande","type":"volkorne","name":"Rubis et Amande","gen":10,"img":"images/volkorne/rubis-amande.png","recipes":[["v:rubis","v:amande"]]},
+ {"id":"v:rubis-amethyste","type":"volkorne","name":"Rubis et Améthyste","gen":10,"img":"images/volkorne/rubis-amethyste.png","recipes":[["v:rubis","v:amethyste"]]},
+ {"id":"v:rubis-dore","type":"volkorne","name":"Rubis et Doré","gen":10,"img":"images/volkorne/rubis-dore.png","recipes":[["v:rubis","v:dore"]]},
+ {"id":"v:rubis-ebene","type":"volkorne","name":"Rubis et Ébène","gen":10,"img":"images/volkorne/rubis-ebene.png","recipes":[["v:rubis","v:ebene"]]},
+ {"id":"v:rubis-emeraude","type":"volkorne","name":"Rubis et Émeraude","gen":10,"img":"images/volkorne/rubis-emeraude.png","recipes":[["v:rubis","v:emeraude"]]},
+ {"id":"v:rubis-indigo","type":"volkorne","name":"Rubis et Indigo","gen":10,"img":"images/volkorne/rubis-indigo.png","recipes":[["v:rubis","v:indigo"]]},
+ {"id":"v:rubis-ivoire","type":"volkorne","name":"Rubis et Ivoire","gen":10,"img":"images/volkorne/rubis-ivoire.png","recipes":[["v:rubis","v:ivoire"]]},
+ {"id":"v:rubis-orchidee","type":"volkorne","name":"Rubis et Orchidée","gen":10,"img":"images/volkorne/rubis-orchidee.png","recipes":[["v:rubis","v:orchidee"]]},
+ {"id":"v:rubis-pourpre","type":"volkorne","name":"Rubis et Pourpre","gen":10,"img":"images/volkorne/rubis-pourpre.png","recipes":[["v:rubis","v:pourpre"]]},
+ {"id":"v:rubis-prune","type":"volkorne","name":"Rubis et Prune","gen":10,"img":"images/volkorne/rubis-prune.png","recipes":[["v:rubis","v:prune"]]},
+ {"id":"v:rubis-roux","type":"volkorne","name":"Rubis et Roux","gen":10,"img":"images/volkorne/rubis-roux.png","recipes":[["v:rubis","v:roux"]]},
+ {"id":"v:rubis-saphir","type":"volkorne","name":"Rubis et Saphir","gen":10,"img":"images/volkorne/rubis-saphir.png","recipes":[["v:rubis","v:saphir"]]},
+ {"id":"v:rubis-turquoise","type":"volkorne","name":"Rubis et Turquoise","gen":10,"img":"images/volkorne/rubis-turquoise.png","recipes":[["v:rubis","v:turquoise"]]},
+ {"id":"v:saphir-amande","type":"volkorne","name":"Saphir et Amande","gen":10,"img":"images/volkorne/saphir-amande.png","recipes":[["v:saphir","v:amande"]]},
+ {"id":"v:saphir-amethyste","type":"volkorne","name":"Saphir et Améthyste","gen":10,"img":"images/volkorne/saphir-amethyste.png","recipes":[["v:saphir","v:amethyste"]]},
+ {"id":"v:saphir-dore","type":"volkorne","name":"Saphir et Doré","gen":10,"img":"images/volkorne/saphir-dore.png","recipes":[["v:saphir","v:dore"]]},
+ {"id":"v:saphir-ebene","type":"volkorne","name":"Saphir et Ébène","gen":10,"img":"images/volkorne/saphir-ebene.png","recipes":[["v:saphir","v:ebene"]]},
+ {"id":"v:saphir-emeraude","type":"volkorne","name":"Saphir et Émeraude","gen":10,"img":"images/volkorne/saphir-emeraude.png","recipes":[["v:saphir","v:emeraude"]]},
+ {"id":"v:saphir-indigo","type":"volkorne","name":"Saphir et Indigo","gen":10,"img":"images/volkorne/saphir-indigo.png","recipes":[["v:saphir","v:indigo"]]},
+ {"id":"v:saphir-ivoire","type":"volkorne","name":"Saphir et Ivoire","gen":10,"img":"images/volkorne/saphir-ivoire.png","recipes":[["v:saphir","v:ivoire"]]},
+ {"id":"v:saphir-orchidee","type":"volkorne","name":"Saphir et Orchidée","gen":10,"img":"images/volkorne/saphir-orchidee.png","recipes":[["v:saphir","v:orchidee"]]},
+ {"id":"v:saphir-pourpre","type":"volkorne","name":"Saphir et Pourpre","gen":10,"img":"images/volkorne/saphir-pourpre.png","recipes":[["v:saphir","v:pourpre"]]},
+ {"id":"v:saphir-prune","type":"volkorne","name":"Saphir et Prune","gen":10,"img":"images/volkorne/saphir-prune.png","recipes":[["v:saphir","v:prune"]]},
+ {"id":"v:saphir-roux","type":"volkorne","name":"Saphir et Roux","gen":10,"img":"images/volkorne/saphir-roux.png","recipes":[["v:saphir","v:roux"]]},
+ {"id":"v:saphir-turquoise","type":"volkorne","name":"Saphir et Turquoise","gen":10,"img":"images/volkorne/saphir-turquoise.png","recipes":[["v:saphir","v:turquoise"]]}
 ];

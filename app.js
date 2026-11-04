@@ -1,28 +1,27 @@
 (() => {
   'use strict';
 
-  const DATA = window.DRAGODINDES;
-  const byName = new Map(DATA.map(m => [m.name, m]));
+  const DATA = window.MOUNTS;
   const byId = new Map(DATA.map(m => [m.id, m]));
-  const MAX_GEN = Math.max(...DATA.map(m => m.gen));
-
-  // Enfants de chaque monture : [{ child, partner, role }]
-  const childrenOf = new Map(DATA.map(m => [m.id, []]));
-  for (const m of DATA) {
-    if (!m.parents) continue;
-    m.parents.forEach((pn, i) => {
-      const p = byName.get(pn);
-      childrenOf.get(p.id).push({ child: m, partner: byName.get(m.parents[1 - i]), role: i });
-    });
-  }
-  const parentsOf = m => (m.parents || []).map(n => byName.get(n));
+  const FAMILIES = [
+    { id: 'dragodinde', label: 'dragodindes', one: 'dragodinde' },
+    { id: 'muldo', label: 'muldos', one: 'muldo' },
+    { id: 'volkorne', label: 'volkornes', one: 'volkorne' },
+  ];
+  const famMounts = new Map(FAMILIES.map(f => [f.id, DATA.filter(m => m.type === f.id)]));
 
   // ---------- Stockage local ----------
   const STORE_KEY = 'dragodindes-genealogie-v1';
+  const AUTH_KEY = 'haras-auth-v1';
   const state = Object.assign(
-    { selected: 'prune-et-emeraude', view: 'tree', depth: 3, zoom: 1, owned: [], onlyOwned: false, planQty: 1, planDone: {}, fwd: true, theme: null },
+    { type: 'dragodinde', selected: null, sel: {}, rc: {}, view: 'tree', depth: 3, zoom: 1, owned: [], onlyOwned: false, planQty: 1, planDone: {}, fwd: true, theme: null },
     load()
   );
+  // Anciennes sauvegardes (dragodindes seules, ids sans préfixe)
+  const legacy = id => (typeof id === 'string' && !id.includes(':') ? 'd:' + id : id);
+  if (state.selected && !state.selected.includes(':')) { state.planDone = {}; }
+  state.selected = legacy(state.selected);
+  state.owned = (state.owned || []).map(legacy);
   const mobileMQ = matchMedia('(max-width: 760px)');
   // Sur petit écran, on démarre un peu dézoomé tant que l'utilisatrice n'a pas choisi de zoom.
   if (load().zoom === undefined && mobileMQ.matches) state.zoom = 0.8;
@@ -30,28 +29,50 @@
   function load() {
     try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch { return {}; }
   }
+  // En mode compte, les montures possédées vivent sur le serveur : on ne les garde pas dans le navigateur
+  // (un autre pseudo sur le même appareil ne doit pas les voir).
   function save() {
-    state.owned = [...owned];
-    try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch { /* stockage indisponible */ }
+    const out = Object.assign({}, state, { owned: account.user ? [] : [...owned] });
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(out)); } catch { /* stockage indisponible */ }
   }
-  if (!byId.has(state.selected)) state.selected = DATA[DATA.length - 1].id;
+  const fam = () => famMounts.get(state.type);
+  const MAX_GEN = 10;
+  if (!famMounts.has(state.type)) state.type = 'dragodinde';
+  if (!byId.has(state.selected) || byId.get(state.selected).type !== state.type) {
+    state.selected = state.sel[state.type] && byId.has(state.sel[state.type]) ? state.sel[state.type] : fam()[fam().length - 1].id;
+  }
+  state.sel[state.type] = state.selected;
+
+  // ---------- Recettes ----------
+  // Une monture peut avoir plusieurs recettes (couples de parents) ; state.rc[id] mémorise celle qui est choisie.
+  const rcIndex = m => Math.min(state.rc[m.id] || 0, (m.recipes ? m.recipes.length : 1) - 1);
+  const recipeOf = m => (m.recipes ? m.recipes[rcIndex(m)] : null);
+  const parentsOf = m => (recipeOf(m) || []).map(id => byId.get(id));
+  const recipeText = r => r.map(id => byId.get(id).name).join(' + ');
+  // Enfants de chaque monture : [{ child, partner, role, rc }] (toutes recettes confondues)
+  const childrenOf = new Map(DATA.map(m => [m.id, []]));
+  for (const m of DATA) {
+    (m.recipes || []).forEach((r, rc) => r.forEach((pid, i) => {
+      childrenOf.get(pid).push({ child: m, partner: byId.get(r[1 - i]), role: i, rc });
+    }));
+  }
 
   // ---------- Éléments ----------
   const $ = s => document.querySelector(s);
   const listEl = $('#list'), detailEl = $('#detail'), canvas = $('#canvas'), viewport = $('#viewport');
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const norm = t => t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
   const ROLE = ['Parent 1', 'Parent 2'];
   // Sens de lecture : true = parents à gauche → enfant à droite ; false = enfant à gauche ← parents à droite.
   const fwd = () => state.fwd !== false;
 
   // ---------- Barre latérale ----------
   function renderList() {
-    const q = $('#search').value.trim().toLowerCase()
-      .normalize('NFD').replace(/[̀-ͯ]/g, '');
+    const q = norm($('#search').value.trim());
     let html = '';
     for (let g = 1; g <= MAX_GEN; g++) {
-      const items = DATA.filter(m => m.gen === g
-        && (!q || m.id.replace(/-/g, ' ').includes(q))
+      const items = fam().filter(m => m.gen === g
+        && (!q || norm(m.name).includes(q))
         && (!state.onlyOwned || owned.has(m.id)));
       if (!items.length) continue;
       html += `<div class="gen-title">Génération ${g}</div>`;
@@ -64,7 +85,11 @@
       }
     }
     listEl.innerHTML = html || '<p style="color:var(--muted)">Aucun résultat.</p>';
-    $('#ownedCount').textContent = `${owned.size}/${DATA.length} possédées`;
+    document.querySelectorAll('#famTabs .chip').forEach(b => {
+      const ms = famMounts.get(b.dataset.fam);
+      b.querySelector('b').textContent = `${ms.filter(m => owned.has(m.id)).length}/${ms.length}`;
+    });
+    $('#ownedCount').textContent = `${fam().filter(m => owned.has(m.id)).length}/${fam().length} possédées`;
   }
   listEl.addEventListener('click', e => {
     const own = e.target.closest('[data-own]');
@@ -78,12 +103,12 @@
 
   function toggleOwned(id, on) {
     on ? owned.add(id) : owned.delete(id);
-    save(); renderAll(false);
+    save(); scheduleSync(); renderAll(false);
   }
 
   $('#exportBtn').addEventListener('click', () => {
     const blob = new Blob([JSON.stringify({ owned: [...owned] }, null, 2)], { type: 'application/json' });
-    const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: 'mes-dragodindes.json' });
+    const a = Object.assign(document.createElement('a'), { href: URL.createObjectURL(blob), download: 'haras-montures.json' });
     a.click(); URL.revokeObjectURL(a.href);
   });
   $('#importFile').addEventListener('change', async e => {
@@ -91,15 +116,15 @@
     try {
       const json = JSON.parse(await f.text());
       owned.clear();
-      (json.owned || []).filter(id => byId.has(id)).forEach(id => owned.add(id));
-      save(); renderAll(false);
+      (json.owned || []).map(legacy).filter(id => byId.has(id)).forEach(id => owned.add(id));
+      save(); scheduleSync(); renderAll(false);
     } catch { alert('Fichier invalide.'); }
     e.target.value = '';
   });
 
   // ---------- Fiche détail ----------
-  function pill(m, cls, role) {
-    return `<span class="pill ${cls}" data-go="${m.id}">
+  function pill(m, cls, role, rc) {
+    return `<span class="pill ${cls}" data-go="${m.id}"${rc === undefined ? '' : ` data-rc="${rc}"`}>
       <img src="${m.img}" alt="">${role ? `<span class="role">${role}</span>` : ''}
       ${esc(m.name)} <span class="gbadge">G${m.gen}</span>${owned.has(m.id) ? ' <span class="owned-badge">✓</span>' : ''}
     </span>`;
@@ -121,15 +146,19 @@
       <div class="recipe">${ps.length
         ? `${pill(ps[0], 'p1', ROLE[0])}<span class="op">+</span>${pill(ps[1], 'p2', ROLE[1])}`
         : '<span style="color:var(--muted)">Monture de base — capture sauvage</span>'}</div>
+      ${m.recipes && m.recipes.length > 1 ? `<div class="alts"><span>${m.recipes.length} recettes possibles :</span>${m.recipes.map((r, i) =>
+        `<button class="br-btn br-btn--sm ${i === rcIndex(m) ? 'br-btn--primary' : 'br-btn--secondary'}" data-rcset="${i}" aria-pressed="${i === rcIndex(m)}">${esc(recipeText(r))}</button>`).join('')}</div>` : ''}
       ${kids.length ? `<details class="children" ${state.kidsOpen ? 'open' : ''}><summary>Sert à obtenir ${kids.length} monture${kids.length > 1 ? 's' : ''}</summary>${kids.map(k =>
-        `<span class="kid">${pill(k.child, 'ch')}<span class="with">avec ${esc(k.partner.name)}</span></span>`).join('')}</details>` : ''}`;
+        `<span class="kid">${pill(k.child, 'ch', '', k.rc)}<span class="with">avec ${esc(k.partner.name)}</span></span>`).join('')}</details>` : ''}`;
     detailEl.querySelector('details')?.addEventListener('toggle', e => { state.kidsOpen = e.target.open; save(); });
   }
   detailEl.addEventListener('click', e => {
     const own = e.target.closest('[data-own]');
     if (own) { toggleOwned(own.dataset.own, own.checked); return; }
+    const set = e.target.closest('[data-rcset]');
+    if (set) { state.rc[state.selected] = +set.dataset.rcset; save(); renderAll(false); return; }
     const go = e.target.closest('[data-go]');
-    if (go) select(go.dataset.go, true);
+    if (go) select(go.dataset.go, true, go.dataset.rc);
   });
 
   // ---------- Arbre d'ascendance ----------
@@ -143,7 +172,7 @@
   }
   function buildTree(m, depth = 0, path = 'r', role = null) {
     const node = { m, depth, path, role, kids: [] };
-    if (m.parents && isOpen(path, depth)) {
+    if (m.recipes && isOpen(path, depth)) {
       node.kids = parentsOf(m).map((p, i) => buildTree(p, depth + 1, `${path}.${i}`, i));
     }
     return node;
@@ -190,10 +219,12 @@
         paths += `<path d="M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}" stroke="${col}" stroke-width="3" fill="none"/>`;
         paths += `<circle cx="${x1}" cy="${y1}" r="4" fill="${col}"/>`;
       }
-      const hasParents = !!n.m.parents;
+      const hasParents = !!n.m.recipes;
       const open = n.kids.length > 0;
-      const tog = hasParents
-        ? `<button class="tog" data-tog="${n.path}" title="${open ? 'Replier' : 'Voir les parents'}">${open ? '−' : '+'}</button>` : '';
+      const tog = (hasParents
+        ? `<button class="tog" data-tog="${n.path}" title="${open ? 'Replier' : 'Voir les parents'}">${open ? '−' : '+'}</button>` : '')
+        + (n.m.recipes && n.m.recipes.length > 1
+          ? `<button class="cyc" data-cyc="${n.m.id}" title="Changer de recette : ${esc(recipeText(n.m.recipes[rcIndex(n.m)]))}">↻ ${rcIndex(n.m) + 1}/${n.m.recipes.length}</button>` : '');
       const role = n.role === null
         ? (n.depth === 0 ? '<span class="role" style="color:var(--accent)">Cible</span>' : '')
         : `<span class="role">${ROLE[n.role]}</span>`;
@@ -219,7 +250,7 @@
     ovPos = new Map();
     let cards = '', heads = '', maxRows = 0;
     for (let g = 1; g <= MAX_GEN; g++) {
-      const col = DATA.filter(m => m.gen === g);
+      const col = fam().filter(m => m.gen === g);
       maxRows = Math.max(maxRows, col.length);
       const x = (fwd() ? g - 1 : MAX_GEN - g) * (O.w + O.colGap);
       heads += `<div class="colhead" style="left:${x}px;width:${O.w}px">Génération ${g}</div>`;
@@ -243,7 +274,7 @@
       return `<path d="M${x1},${y1} C${mx},${y1} ${mx},${y2} ${x2},${y2}" stroke="${col}" stroke-width="${wdt}" fill="none"/>`;
     };
     let dim = '', hl = '';
-    for (const m of DATA) parentsOf(m).forEach(p => { dim += edge(p, m, 'var(--edge-dim)', 1.5); });
+    for (const m of fam()) parentsOf(m).forEach(p => { dim += edge(p, m, 'var(--edge-dim)', 1.5); });
     ps.forEach((p, i) => { hl += edge(p, sel, i ? 'var(--p2)' : 'var(--p1)', 3.5); });
     kids.forEach(k => { hl += edge(sel, k, 'var(--ch)', 3); });
     canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
@@ -253,6 +284,12 @@
   // ---------- Interactions canvas ----------
   canvas.addEventListener('click', e => {
     if (dragMoved) return;
+    const cy = e.target.closest('[data-cyc]');
+    if (cy) {
+      const m = byId.get(cy.dataset.cyc);
+      state.rc[m.id] = (rcIndex(m) + 1) % m.recipes.length; save(); expanded.clear(); renderTree(); renderDetail();
+      return;
+    }
     const t = e.target.closest('[data-tog]');
     if (t) {
       const path = t.dataset.tog, depth = path.split('.').length - 1;
@@ -314,20 +351,20 @@
   function computePlan(target, qty) {
     const need = new Map([[target.id, qty]]);
     const rows = [];
-    const byGenDesc = [...DATA].sort((a, b) => b.gen - a.gen);
+    const byGenDesc = [...fam()].sort((a, b) => b.gen - a.gen);
     for (const m of byGenDesc) {
       const n = need.get(m.id) || 0;
       if (!n) continue;
       const use = m === target ? 0 : Math.min(owned.has(m.id) ? 1 : 0, n);
       const make = n - use;
       rows.push({ m, need: n, use, make });
-      if (make && m.parents) parentsOf(m).forEach(p => need.set(p.id, (need.get(p.id) || 0) + make));
+      if (make && m.recipes) parentsOf(m).forEach(p => need.set(p.id, (need.get(p.id) || 0) + make));
     }
     rows.reverse(); // de la génération la plus basse à la plus haute
     return {
       rows,
-      captures: rows.filter(r => !r.m.parents && r.make),
-      breedings: rows.filter(r => r.m.parents && r.make),
+      captures: rows.filter(r => !r.m.recipes && r.make),
+      breedings: rows.filter(r => r.m.recipes && r.make),
       fromStock: rows.filter(r => r.use),
     };
   }
@@ -390,16 +427,19 @@
       html += plan.breedings.filter(r => r.m.gen === g).map(r => {
         const [p1, p2] = parentsOf(r.m);
         const parents = `${mini(p1, 'p1')}<span class="op">+</span>${mini(p2, 'p2')}`;
-        return stepRow(r, fwd()
+        const choice = r.m.recipes.length > 1
+          ? `<select class="br-input br-input--sm rc-sel" data-rcsel="${r.m.id}" title="Recette utilisée" aria-label="Recette de ${esc(r.m.name)}">${r.m.recipes.map((rc, i) =>
+            `<option value="${i}"${i === rcIndex(r.m) ? ' selected' : ''}>Recette ${i + 1}/${r.m.recipes.length} · ${esc(recipeText(rc))}</option>`).join('')}</select>` : '';
+        return stepRow(r, (fwd()
           ? `${parents}<span class="op">=</span>${mini(r.m, 'ch')}`
-          : `${mini(r.m, 'ch')}<span class="op">=</span>${parents}`);
+          : `${mini(r.m, 'ch')}<span class="op">=</span>${parents}`) + choice);
       }).join('');
     });
     if (plan.fromStock.length) {
       html += `<h3>Pris dans ton stock</h3><div class="stock">${plan.fromStock.map(r => mini(r.m)).join('')}</div>`;
     }
     html += `<p class="hint">Hypothèse : chaque accouplement consomme un exemplaire de chaque parent et donne un bébé de la monture visée.
-      Une monture cochée « possédée » compte pour un exemplaire. Les échecs éventuels ne sont pas comptés.</p>`;
+      Une monture cochée « possédée » compte pour un exemplaire. Quand une monture a plusieurs recettes, la liste suit celle que tu as choisie. Les échecs éventuels ne sont pas comptés.</p>`;
     planEl.innerHTML = html;
 
     planEl.querySelector('#planQty').addEventListener('change', e => {
@@ -419,8 +459,8 @@
         lines.push('', `Génération ${g} :`);
         plan.breedings.filter(r => r.m.gen === g).forEach(r =>
           lines.push(fwd()
-            ? `- ${r.make} × ${r.m.parents[0]} + ${r.m.parents[1]} = ${r.m.name}`
-            : `- ${r.make} × ${r.m.name} = ${r.m.parents[0]} + ${r.m.parents[1]}`));
+            ? `- ${r.make} × ${parentsOf(r.m).map(p => p.name).join(' + ')} = ${r.m.name}`
+            : `- ${r.make} × ${r.m.name} = ${parentsOf(r.m).map(p => p.name).join(' + ')}`));
       });
       if (plan.fromStock.length) lines.push('', 'Pris dans le stock : ' + plan.fromStock.map(r => r.m.name).join(', '));
       navigator.clipboard.writeText(lines.join('\n')).then(
@@ -429,6 +469,8 @@
     });
   }
   planEl.addEventListener('change', e => {
+    const rs = e.target.closest('[data-rcsel]');
+    if (rs) { state.rc[rs.dataset.rcsel] = +rs.value; save(); renderPlan(); return; }
     const d = e.target.closest('[data-done]');
     if (!d) return;
     const t = (state.planDone[state.selected] ||= {});
@@ -445,18 +487,52 @@
   document.addEventListener('animationend', e => e.target.classList?.remove('is-pop'));
 
   // ---------- Thème clair / sombre ----------
-  // Tant que l'utilisatrice n'a pas choisi, on suit le thème du système.
+  // Tant que l'utilisatrice n'a pas choisi (« Auto »), on suit le thème du système.
   const systemDark = matchMedia('(prefers-color-scheme: dark)');
-  const isDark = () => state.theme ? state.theme === 'dark' : systemDark.matches;
   function applyTheme() {
     if (state.theme) document.documentElement.dataset.theme = state.theme;
     else delete document.documentElement.dataset.theme;
-    const b = $('#themeBtn');
-    b.innerHTML = isDark() ? '☀︎<span class="lg"> Clair</span>' : '☾<span class="lg"> Sombre</span>';
-    b.title = isDark() ? 'Passer en thème clair' : 'Passer en thème sombre';
+    markSeg('#themeSeg', 'themeSet', state.theme || 'auto');
   }
-  $('#themeBtn').addEventListener('click', () => { state.theme = isDark() ? 'light' : 'dark'; save(); applyTheme(); });
   systemDark.addEventListener('change', applyTheme);
+
+  // ---------- Popup d'options (bouton engrenage) ----------
+  const optBtn = $('#optBtn'), optPop = $('#options');
+  function markSeg(sel, key, val) {
+    document.querySelectorAll(sel + ' button').forEach(b => {
+      const on = b.dataset[key] === val;
+      b.classList.toggle('br-btn--primary', on); b.classList.toggle('br-btn--secondary', !on);
+      b.setAttribute('aria-pressed', on);
+    });
+  }
+  function placeOptions() { // la popup est hors de l'en-tête : on l'ancre sous l'engrenage
+    const r = optBtn.getBoundingClientRect();
+    optPop.style.top = Math.round(r.bottom + 8) + 'px';
+    optPop.style.right = Math.max(8, Math.round(innerWidth - r.right)) + 'px';
+  }
+  window.addEventListener('resize', () => { if (!optPop.hidden) placeOptions(); });
+  function setOptions(open) {
+    if (open) placeOptions();
+    optPop.hidden = !open;
+    optBtn.setAttribute('aria-expanded', open);
+    if (open) optPop.querySelector('button')?.focus({ preventScroll: true });
+  }
+  optBtn.addEventListener('click', () => setOptions(optPop.hidden));
+  document.addEventListener('click', e => {
+    if (!optPop.hidden && !e.target.closest('.opt-wrap, #options')) setOptions(false);
+  });
+  window.addEventListener('keydown', e => { if (e.key === 'Escape' && !optPop.hidden) { setOptions(false); optBtn.focus(); } });
+  $('#themeSeg').addEventListener('click', e => {
+    const b = e.target.closest('[data-theme-set]'); if (!b) return;
+    state.theme = b.dataset.themeSet === 'auto' ? null : b.dataset.themeSet; save(); applyTheme();
+  });
+  $('#dirSeg').addEventListener('click', e => {
+    const b = e.target.closest('[data-dir-set]'); if (!b) return;
+    const f = b.dataset.dirSet === 'fwd';
+    if (f === fwd()) return;
+    state.fwd = f; save(); renderAll(true); centerOverview('auto');
+  });
+  $('#logoutBtn').addEventListener('click', logout);
   applyTheme();
 
   // ---------- Tiroir des montures (mobile) ----------
@@ -470,7 +546,7 @@
   });
   $('#closeMenu').addEventListener('click', () => setMenu(false));
   $('#backdrop').addEventListener('click', () => setMenu(false));
-  window.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
+  window.addEventListener('keydown', e => { if (e.key === 'Escape' && document.body.classList.contains('menu-open')) setMenu(false); });
   mobileMQ.addEventListener('change', () => setMenu(false));
 
   // ---------- Pincer pour zoomer (tactile) ----------
@@ -494,15 +570,29 @@
   }, { passive: false });
   viewport.addEventListener('touchend', () => { pinch = null; });
 
-  // ---------- Sens de lecture ----------
-  $('#dirBtn').addEventListener('click', () => {
-    state.fwd = !fwd(); save(); renderAll(true); centerOverview('auto');
-  });
-
-  // ---------- Onglets ----------
-  document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => {
+  // ---------- Onglets (vues et familles) ----------
+  function tabsState(sel, attr, current) {
+    const tabs = [...document.querySelectorAll(sel + ' button')];
+    tabs.forEach(b => {
+      const on = b.dataset[attr] === current;
+      b.classList.toggle('active', on); b.classList.toggle('is-active', on);
+      b.setAttribute('aria-selected', on);
+    });
+    $(sel).style.setProperty('--i', tabs.findIndex(b => b.dataset[attr] === current)); // fait glisser le fond
+  }
+  $('#viewTabs').addEventListener('click', e => {
+    const b = e.target.closest('[data-view]'); if (!b) return;
     state.view = b.dataset.view; save(); renderAll(true); centerOverview('auto');
-  }));
+  });
+  $('#famTabs').addEventListener('click', e => {
+    const b = e.target.closest('[data-fam]'); if (!b || b.dataset.fam === state.type) return;
+    state.type = b.dataset.fam; expanded.clear();
+    state.selected = state.sel[state.type] && byId.has(state.sel[state.type]) ? state.sel[state.type] : fam()[fam().length - 1].id;
+    state.sel[state.type] = state.selected;
+    $('#search').value = '';
+    save(); renderAll(true); centerOverview('auto');
+    listEl.querySelector('.item.sel')?.scrollIntoView({ block: 'center' });
+  });
 
   // ---------- Rendu global ----------
   function renderCanvas() {
@@ -512,14 +602,12 @@
   function renderAll(resetScroll) {
     document.body.dataset.view = state.view;
     document.body.classList.toggle('rev', !fwd());
-    $('#dirBtn').innerHTML = `<span class="lg">Sens : </span>${fwd() ? 'Parents → Enfant' : 'Enfant ← Parents'}`;
-    const tabs = [...document.querySelectorAll('.tabs button')];
-    tabs.forEach(b => {
-      const on = b.dataset.view === state.view;
-      b.classList.toggle('active', on); b.classList.toggle('is-active', on);
-      b.setAttribute('aria-selected', on);
-    });
-    $('.tabs').style.setProperty('--i', tabs.findIndex(b => b.dataset.view === state.view)); // fait glisser le fond
+    markSeg('#dirSeg', 'dirSet', fwd() ? 'fwd' : 'rev');
+    tabsState('#viewTabs', 'view', state.view);
+    tabsState('#famTabs', 'fam', state.type);
+    const f = FAMILIES.find(x => x.id === state.type);
+    $('#menuLabel').textContent = f.label[0].toUpperCase() + f.label.slice(1);
+    $('#subtitle').innerHTML = `Généalogie des ${f.label} · ${fam().length} montures · 10 générations · recettes <a href="https://dofuselevage.fr/tools/reproduction/${f.id}/genealogie" target="_blank" rel="noopener">DofusElevage</a>`;
     renderList(); renderDetail(); renderCanvas();
     if (resetScroll) {
       if (state.view === 'tree') { // on se place sur la cible (à droite ou à gauche selon le sens)
@@ -529,8 +617,9 @@
       planEl.scrollTo(0, 0);
     }
   }
-  function select(id, scrollList) {
-    state.selected = id; expanded.clear(); save();
+  function select(id, scrollList, rc) {
+    if (rc !== undefined && rc !== null) state.rc[id] = +rc; // on arrive par une recette précise
+    state.selected = id; state.sel[state.type] = id; expanded.clear(); save();
     renderAll(state.view === 'tree');
     centerOverview('smooth');
     if (scrollList !== true) listEl.querySelector('.item.sel')?.scrollIntoView({ block: 'nearest' });
@@ -542,7 +631,120 @@
     viewport.scrollTo({ left: p.x * state.zoom - viewport.clientWidth / 3, top: p.y * state.zoom - viewport.clientHeight / 3, behavior });
   }
 
-  renderAll(true);
-  centerOverview('auto');
-  listEl.querySelector('.item.sel')?.scrollIntoView({ block: 'center' });
+  // ---------- Compte : pseudo sans mot de passe, « se souvenir de moi », montures possédées sur le serveur ----------
+  const account = { user: null, backend: false };
+  const authEl = $('#auth'), authErr = $('#authErr');
+  const readToken = () => { try { return localStorage.getItem(AUTH_KEY) || sessionStorage.getItem(AUTH_KEY); } catch { return null; } };
+  function writeToken(token, remember) {
+    try {
+      localStorage.removeItem(AUTH_KEY); sessionStorage.removeItem(AUTH_KEY);
+      if (token) (remember ? localStorage : sessionStorage).setItem(AUTH_KEY, token);
+    } catch { /* stockage indisponible : on reste connecté le temps de la page */ }
+  }
+  let token = readToken();
+  async function api(path, method = 'GET', body) {
+    let res;
+    try {
+      res = await fetch(path, {
+        method, cache: 'no-store',
+        headers: Object.assign({ 'Content-Type': 'application/json' }, token ? { Authorization: 'Bearer ' + token } : {}),
+        body: body === undefined ? undefined : JSON.stringify(body),
+      });
+    } catch { throw Object.assign(new Error('Serveur injoignable.'), { status: 0 }); }
+    const ct = res.headers.get('content-type') || '';
+    const json = ct.includes('json') ? await res.json().catch(() => ({})) : null;
+    if (!res.ok || json === null) throw Object.assign(new Error((json && json.error) || 'Erreur ' + res.status), { status: json === null ? 404 : res.status });
+    return json;
+  }
+
+  function setOwned(ids) {
+    owned.clear(); ids.map(legacy).filter(id => byId.has(id)).forEach(id => owned.add(id));
+  }
+  function showAccountUI() {
+    $('#acct').hidden = !account.user;
+    if (account.user) {
+      const av = $('#avatar');
+      av.textContent = [...account.user][0].toUpperCase();
+      av.title = 'Connecté : ' + account.user; av.setAttribute('aria-label', 'Connecté : ' + account.user);
+    }
+    const note = $('#optNote');
+    note.hidden = account.backend;
+    note.textContent = account.backend ? '' : 'Mode local : pas de serveur détecté, les montures possédées restent dans ce navigateur. Lance « python3 server.py » pour avoir des comptes.';
+  }
+  async function openAuth(msg) {
+    authEl.hidden = false; document.body.classList.add('auth-open');
+    authErr.hidden = !msg; authErr.textContent = msg || '';
+    $('#authName').value = '';
+    let users = [];
+    try { users = (await api('/api/users')).users; } catch { /* on propose quand même la création */ }
+    $('#authUsers').hidden = !users.length;
+    $('#authList').innerHTML = users.map(u =>
+      `<button type="button" class="auth-user" data-user="${esc(u)}" role="listitem"><span class="avatar">${esc([...u][0].toUpperCase())}</span><span class="nm">${esc(u)}</span></button>`).join('');
+    $('#authNewLbl').textContent = users.length ? 'Ou crée un nouveau compte (un pseudo suffit, pas de mot de passe) :' : 'Crée ton compte : un pseudo suffit, pas de mot de passe.';
+    (users.length ? authEl.querySelector('.auth-user') : $('#authName')).focus();
+  }
+  function closeAuth() { authEl.hidden = true; document.body.classList.remove('auth-open'); }
+  function enter(res, remember) {
+    token = res.token; writeToken(token, remember);
+    account.user = res.username; setOwned(res.owned || []);
+    state.owned = []; save(); showAccountUI(); closeAuth(); renderAll(false);
+  }
+  async function submitAuth(kind, name) {
+    const username = (name ?? $('#authName').value).trim().replace(/\s+/g, ' ');
+    if (username.length < 2) { authErr.hidden = false; authErr.textContent = 'Entre un pseudo (2 caractères minimum).'; return; }
+    const remember = $('#authRemember').checked;
+    const btns = authEl.querySelectorAll('button'); btns.forEach(b => { b.disabled = true; });
+    try {
+      // À la création, on reprend les montures déjà cochées dans ce navigateur (mode local).
+      const res = await api('/api/' + kind, 'POST', kind === 'register' ? { username, remember, owned: [...owned] } : { username, remember });
+      enter(res, remember);
+    } catch (err) {
+      authErr.hidden = false; authErr.textContent = err.message;
+      if (err.status === 404 && kind === 'login') openAuth(err.message); // le profil a disparu : on rafraîchit la liste
+    } finally { btns.forEach(b => { b.disabled = false; }); }
+  }
+  $('#authForm').addEventListener('submit', e => { e.preventDefault(); submitAuth('register'); });
+  $('#authList').addEventListener('click', e => {
+    const b = e.target.closest('[data-user]'); if (b) submitAuth('login', b.dataset.user);
+  });
+  async function logout() {
+    try { await api('/api/logout', 'POST'); } catch { /* déjà déconnectée côté serveur */ }
+    token = null; writeToken(null); account.user = null; owned.clear(); state.owned = [];
+    save(); showAccountUI(); renderAll(false);
+    openAuth();
+  }
+
+  // Envoi des montures possédées (regroupé : un seul envoi après une série de coches)
+  let syncTimer = null;
+  function scheduleSync() {
+    if (!account.user) return;
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(async () => {
+      try { await api('/api/owned', 'PUT', { owned: [...owned] }); }
+      catch (err) { if (err.status === 401) { account.user = null; token = null; writeToken(null); showAccountUI(); openAuth('Session expirée, reconnecte-toi.'); } }
+    }, 400);
+  }
+  window.addEventListener('pagehide', () => {
+    if (!account.user || syncTimer === null) return;
+    fetch('/api/owned', { method: 'PUT', keepalive: true, headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token }, body: JSON.stringify({ owned: [...owned] }) });
+  });
+
+  async function boot() {
+    renderAll(true);
+    centerOverview('auto');
+    listEl.querySelector('.item.sel')?.scrollIntoView({ block: 'center' });
+    if (location.protocol === 'file:') { showAccountUI(); return; }
+    const hadToken = !!token;
+    try {
+      const me = await api('/api/me');
+      account.backend = true; account.user = me.username; setOwned(me.owned); state.owned = []; save();
+      showAccountUI(); renderAll(false);
+    } catch (err) {
+      if (err.status === 0 || err.status === 404) { account.backend = false; showAccountUI(); return; } // pas de serveur : mode local
+      account.backend = true; showAccountUI();
+      if (err.status === 401) { token = null; writeToken(null); openAuth(hadToken ? 'Session expirée, reconnecte-toi.' : ''); }
+      else openAuth(err.message);
+    }
+  }
+  boot();
 })();
