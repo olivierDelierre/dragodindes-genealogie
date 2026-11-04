@@ -51,21 +51,23 @@ couleur en dur. Police Nunito chargée depuis Google Fonts (repli sur Helvetica 
 navigateur ; dans l'en-tête, la même icône est inlinée et suit le bouton clair/sombre de l'application.
 `icon-32.png` et `apple-touch-icon.png` sont les versions PNG de secours (favicon et écran d'accueil iOS).
 
-## Héberger sur TrueNAS (Docker)
+## Héberger sur TrueNAS (Docker + ghcr.io)
 
 Prérequis : TrueNAS SCALE 24.10 ou plus récent (Apps basées sur Docker).
 
-1. **Dataset pour la base** : Datasets → créer par ex. `POOL/apps/haras`, puis Edit Permissions → utilisateur et
-   groupe `apps` (uid/gid 568), ACL de type POSIX/Unix. Le dataset doit être local au NAS (pas un partage
-   réseau : SQLite y est fragile).
-2. **Récupérer le code** : dans Système → Shell du NAS, `git clone https://github.com/olivierDelierre/dragodindes-genealogie.git`
-   puis `git checkout brume` (ou `main` une fois fusionnée).
-3. **Construire et lancer** : `cd dragodindes-genealogie`, adapter le chemin du volume dans `docker-compose.yml`
-   (`/mnt/POOL/apps/haras:/data`), puis `docker compose up -d --build`. L'app répond sur `http://IP-DU-NAS:8765/`.
-   Pour mettre à jour : `git pull && docker compose up -d --build`.
-   (Alternative : Apps → Discover Apps → ⋮ → Install via YAML avec le contenu de `docker-compose.yml`, une fois
-   l'image construite ou publiée.)
-4. **Sauvegarde** : le seul état est `haras.db` dans le dataset ; inclus-le dans tes snapshots.
+L'image est construite par GitHub Actions (`.github/workflows/docker.yml`) à chaque push sur `main` ou `brume`
+et publiée sur `ghcr.io/olivierdelierre/dragodindes-genealogie` (tags `latest` = `main`, `brume`, et le sha court).
+
+1. **Rendre l'image récupérable** : sur GitHub, Profil → Packages → `dragodindes-genealogie` → Package settings →
+   Change visibility → Public (aucun secret dedans), ou la laisser privée et faire une fois sur le NAS
+   `docker login ghcr.io` avec un token « read:packages ».
+2. **Dataset pour la base** : Datasets → créer par ex. `POOL/apps/haras`, puis Edit Permissions → utilisateur et
+   groupe `apps` (uid/gid 568). Il doit être local au NAS (pas un partage réseau : SQLite y est fragile).
+3. **Installer** : Apps → Discover Apps → ⋮ → Install via YAML, coller `docker-compose.yml` en remplaçant `POOL`
+   et le tag (`:latest` une fois `brume` fusionnée dans `main`). L'app répond sur `http://IP-DU-NAS:8765/`.
+4. **Mettre à jour** : après un push, attendre la fin de l'action puis, sur l'app, Update (ou
+   `docker compose pull && docker compose up -d` depuis le Shell).
+5. **Sauvegarde** : le seul état est `haras.db` dans le dataset ; inclus-le dans tes snapshots.
 
 Sécurité : il n'y a pas de mot de passe et la liste des pseudos est publique. Garde l'app sur ton réseau local
 (ou derrière un VPN type Tailscale/WireGuard) et ne l'expose pas directement sur Internet.
