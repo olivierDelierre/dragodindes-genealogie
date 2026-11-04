@@ -505,14 +505,21 @@
       b.setAttribute('aria-pressed', on);
     });
   }
+  function placeOptions() { // la popup est hors de l'en-tête : on l'ancre sous l'engrenage
+    const r = optBtn.getBoundingClientRect();
+    optPop.style.top = Math.round(r.bottom + 8) + 'px';
+    optPop.style.right = Math.max(8, Math.round(innerWidth - r.right)) + 'px';
+  }
+  window.addEventListener('resize', () => { if (!optPop.hidden) placeOptions(); });
   function setOptions(open) {
+    if (open) placeOptions();
     optPop.hidden = !open;
     optBtn.setAttribute('aria-expanded', open);
     if (open) optPop.querySelector('button')?.focus({ preventScroll: true });
   }
   optBtn.addEventListener('click', () => setOptions(optPop.hidden));
   document.addEventListener('click', e => {
-    if (!optPop.hidden && !e.target.closest('.opt-wrap')) setOptions(false);
+    if (!optPop.hidden && !e.target.closest('.opt-wrap, #options')) setOptions(false);
   });
   window.addEventListener('keydown', e => { if (e.key === 'Escape' && !optPop.hidden) { setOptions(false); optBtn.focus(); } });
   $('#themeSeg').addEventListener('click', e => {
