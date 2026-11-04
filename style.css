@@ -353,6 +353,24 @@ body.rev .card .tog { left: auto; right: -14px; }
 .plan .hint, .plan .empty { color: var(--ink-muted); font-size: 13px; margin-top: var(--space-8); }
 .plan .empty { font-size: 15px; }
 
+/* Fiche de stats au survol de l'image d'une monture (verre Brume, comme les fiches de dofus-job) */
+.mount-tip {
+  position: fixed; z-index: 70; width: 280px; max-width: calc(100vw - 16px); padding: var(--space-5);
+  border-radius: var(--radius-xl); box-shadow: var(--shadow-lg); pointer-events: none; color: var(--ink);
+  font-size: 14px; line-height: 20px;
+  -webkit-backdrop-filter: blur(var(--blur-lg)) saturate(160%); backdrop-filter: blur(var(--blur-lg)) saturate(160%);
+}
+.mount-tip[hidden] { display: none; }
+.mount-tip header { display: flex; gap: var(--space-3); align-items: center; }
+.mount-tip header img { width: 56px; height: 56px; object-fit: contain; flex-shrink: 0; }
+.tip-name { font-weight: 700; font-size: 16px; line-height: 22px; }
+.tip-sub { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; margin-top: var(--space-1); color: var(--ink-muted); }
+.tip-title { margin: var(--space-4) 0 var(--space-1); font: 600 12px/18px var(--font-sans); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-muted); }
+.tip-stats { list-style: none; margin: 0; padding: 0; }
+.tip-stats li { display: flex; justify-content: space-between; gap: var(--space-3); padding: var(--space-1) 0; border-top: 1px solid var(--border); }
+.tip-stats li:first-child { border-top: 0; }
+.tip-stats b { color: var(--brand); white-space: nowrap; }
+
 /* Éléments réservés au mobile (cachés sur grand écran) */
 .menu, .close-menu, .backdrop, .tabs .sm { display: none; }
 

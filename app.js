@@ -78,7 +78,7 @@
       html += `<div class="gen-title">Génération ${g}</div>`;
       for (const m of items) {
         html += `<div class="item${m.id === state.selected ? ' sel' : ''}" data-id="${m.id}">
-          <img src="${m.img}" alt="" loading="lazy">
+          <img data-mid="${m.id}" src="${m.img}" alt="" loading="lazy">
           <span class="nm">${esc(m.name)}</span>
           <input type="checkbox" data-own="${m.id}" title="Je la possède" ${owned.has(m.id) ? 'checked' : ''}>
         </div>`;
@@ -125,7 +125,7 @@
   // ---------- Fiche détail ----------
   function pill(m, cls, role, rc) {
     return `<span class="pill ${cls}" data-go="${m.id}"${rc === undefined ? '' : ` data-rc="${rc}"`}>
-      <img src="${m.img}" alt="">${role ? `<span class="role">${role}</span>` : ''}
+      <img data-mid="${m.id}" src="${m.img}" alt="">${role ? `<span class="role">${role}</span>` : ''}
       ${esc(m.name)} <span class="gbadge">G${m.gen}</span>${owned.has(m.id) ? ' <span class="owned-badge">✓</span>' : ''}
     </span>`;
   }
@@ -135,7 +135,7 @@
     const kids = childrenOf.get(m.id);
     detailEl.innerHTML = `
       <div class="hero">
-        <img src="${m.img}" alt="${esc(m.name)}">
+        <img data-mid="${m.id}" src="${m.img}" alt="${esc(m.name)}">
         <div>
           <h2>${esc(m.name)}</h2>
           <div class="sub"><span class="gbadge">Génération ${m.gen}</span>
@@ -193,7 +193,7 @@
   }
   function cardHTML(m, { x, y, w, h, cls = '', role = '', tog = '', extra = '' }) {
     return `<div class="card ${cls}" data-go="${m.id}" ${extra} style="left:${x}px;top:${y}px;width:${w}px;height:${h}px">
-      <img src="${m.img}" alt="" loading="lazy">
+      <img data-mid="${m.id}" src="${m.img}" alt="" loading="lazy">
       <div class="info">
         <div class="name">${esc(m.name)}</div>
         <div class="meta"><span class="gbadge">G${m.gen}</span>${role}</div>
@@ -369,7 +369,7 @@
     };
   }
   function mini(m, cls = '') {
-    return `<span class="pill ${cls}"><img src="${m.img}" alt="">${esc(m.name)} <span class="gbadge">G${m.gen}</span></span>`;
+    return `<span class="pill ${cls}"><img data-mid="${m.id}" src="${m.img}" alt="">${esc(m.name)} <span class="gbadge">G${m.gen}</span></span>`;
   }
   function renderPlan() {
     const target = byId.get(state.selected);
@@ -393,7 +393,7 @@
     let html = `
       <div class="plan-head">
         <div class="goal">
-          <img src="${target.img}" alt="">
+          <img data-mid="${target.id}" src="${target.img}" alt="">
           <div>
             <div class="lbl">Objectif</div>
             <div class="gname">${esc(target.name)} <span class="gbadge">G${target.gen}</span></div>
@@ -534,6 +534,55 @@
   });
   $('#logoutBtn').addEventListener('click', logout);
   applyTheme();
+
+
+  // ---------- Fiche de stats au survol de l'image d'une monture ----------
+  // Même principe que les fiches d'objets de dofus-job : carte en verre Brume dans le <body>, ouverte après un court
+  // délai, placée au-dessus de l'image (ou dessous s'il n'y a pas la place), sans jamais capter la souris.
+  const TIP_LABEL = { dragodinde: 'Dragodinde', muldo: 'Muldo', volkorne: 'Volkorne' };
+  const tip = Object.assign(document.createElement('div'), { className: 'mount-tip br-glass', hidden: true });
+  tip.setAttribute('role', 'tooltip');
+  document.body.append(tip);
+  let tipTimer = null, tipFor = null;
+  function statRow(s) {
+    const m = /^(-?\d+)(%?)\s+(.+)$/.exec(s);
+    return m ? `<li><span>${esc(m[3])}</span><b>${(+m[1]).toLocaleString('fr-FR')}${m[2]}</b></li>` : `<li><span>${esc(s)}</span></li>`;
+  }
+  function tipHTML(m) {
+    const fertile = (m.stats || []).includes('Fertile');
+    const stats = (m.stats || []).filter(s => s !== 'Fertile');
+    return `<header>
+        <img src="${m.img}" alt="" draggable="false">
+        <div>
+          <div class="tip-name">${esc(m.name)}</div>
+          <div class="tip-sub"><span>${TIP_LABEL[m.type]}</span><span class="gbadge">G${m.gen}</span>${fertile ? '<span class="br-badge br-badge--success">Fertile</span>' : ''}</div>
+        </div>
+      </header>
+      ${stats.length ? `<div class="tip-title">Bonus donnés</div><ul class="tip-stats">${stats.map(statRow).join('')}</ul>` : ''}`;
+  }
+  function placeTip(a) {
+    const M = 8, r = a.getBoundingClientRect(), c = tip.getBoundingClientRect();
+    const left = Math.min(Math.max(M, r.left + r.width / 2 - c.width / 2), innerWidth - c.width - M);
+    const above = r.top - c.height - M >= 0;
+    const top = above ? r.top - c.height - M : Math.min(r.bottom + M, innerHeight - c.height - M);
+    tip.style.left = left + 'px'; tip.style.top = Math.max(M, top) + 'px';
+  }
+  function hideTip() { clearTimeout(tipTimer); tipFor = null; tip.hidden = true; }
+  document.addEventListener('mouseover', e => {
+    const img = e.target.closest && e.target.closest('img[data-mid]');
+    if (img === tipFor) return;
+    hideTip();
+    if (!img || !byId.has(img.dataset.mid)) return;
+    tipFor = img;
+    tipTimer = setTimeout(() => {
+      tip.innerHTML = tipHTML(byId.get(img.dataset.mid));
+      tip.hidden = false; placeTip(img);
+    }, 120);
+  });
+  document.documentElement.addEventListener('mouseleave', hideTip);
+  document.addEventListener('pointerdown', hideTip);
+  document.addEventListener('scroll', hideTip, true);
+  window.addEventListener('keydown', e => { if (e.key === 'Escape') hideTip(); });
 
   // ---------- Tiroir des montures (mobile) ----------
   function setMenu(open) {
