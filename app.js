@@ -663,9 +663,9 @@
   function showAccountUI() {
     $('#acct').hidden = !account.user;
     if (account.user) {
-      const av = $('#avatar');
-      av.textContent = [...account.user][0].toUpperCase();
-      av.title = 'Connecté : ' + account.user; av.setAttribute('aria-label', 'Connecté : ' + account.user);
+      $('#avatar').textContent = [...account.user][0].toUpperCase();
+      $('#userName').textContent = account.user;
+      $('#acct').title = 'Connecté : ' + account.user;
     }
     const note = $('#optNote');
     note.hidden = account.backend;
@@ -679,7 +679,7 @@
     try { users = (await api('/api/users')).users; } catch { /* on propose quand même la création */ }
     $('#authUsers').hidden = !users.length;
     $('#authList').innerHTML = users.map(u =>
-      `<button type="button" class="auth-user" data-user="${esc(u)}" role="listitem"><span class="avatar">${esc([...u][0].toUpperCase())}</span><span class="nm">${esc(u)}</span></button>`).join('');
+      `<button type="button" class="auth-user" data-user="${esc(u)}" role="listitem"><span class="br-nav__avatar">${esc([...u][0].toUpperCase())}</span><span class="nm">${esc(u)}</span></button>`).join('');
     $('#authNewLbl').textContent = users.length ? 'Ou crée un nouveau compte (un pseudo suffit, pas de mot de passe) :' : 'Crée ton compte : un pseudo suffit, pas de mot de passe.';
     (users.length ? authEl.querySelector('.auth-user') : $('#authName')).focus();
   }
