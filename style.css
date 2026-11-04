@@ -132,9 +132,7 @@ body.auth-open .layout, body.auth-open .topbar > :not(.brand) { pointer-events: 
   width: calc((100% - 2 * var(--space-1)) / var(--n, 3)); border-radius: var(--radius-md); }
 .tabs .br-tabs__tab { min-height: 40px; padding: var(--space-2) var(--space-3); font-size: 14px; border-radius: var(--radius-md); }
 
-.tabs.fam { width: min(100%, 360px); order: 1; }
 .tabs.views { order: 2; }
-.tabs.fam .br-tabs__tab { padding: var(--space-2); }
 
 /* ---------- Mise en page ---------- */
 .layout { flex: 1; display: flex; min-height: 0; }
@@ -145,6 +143,17 @@ body.auth-open .layout, body.auth-open .topbar > :not(.brand) { pointer-events: 
   width: 290px; flex-shrink: 0; display: flex; flex-direction: column; gap: var(--space-3);
   padding: var(--space-4); border-right: 1px solid var(--border); background: var(--surface-raised); min-height: 0;
 }
+/* Choix de la famille de montures : pastilles en haut du catalogue */
+.famchips { display: grid; grid-template-columns: repeat(3, auto); gap: var(--space-1); padding: var(--space-1); background: var(--surface-sunken); border-radius: var(--radius-lg); }
+.chip {
+  display: flex; flex-direction: column; align-items: center; gap: 0; padding: var(--space-2) 2px; min-width: 0;
+  border: 0; border-radius: var(--radius-md); background: transparent; color: var(--ink-muted); cursor: pointer;
+  font: 600 12px/18px var(--font-sans); transition: background-color .2s ease, color .2s ease, box-shadow .2s ease;
+}
+.chip span { max-width: 100%; white-space: nowrap; }
+.chip b { font: 600 11px/16px var(--font-sans); opacity: .8; }
+.chip:hover { color: var(--ink); }
+.chip.active { background: var(--surface-raised); color: var(--brand); box-shadow: var(--shadow-sm); }
 #search { min-height: 44px; }
 .chk { font-size: 14px; color: var(--ink-muted); display: flex; gap: var(--space-2); align-items: center; }
 input[type="checkbox"] { accent-color: var(--brand); cursor: pointer; }
@@ -328,7 +337,7 @@ body.rev .card .tog { left: auto; right: -14px; }
 .menu, .close-menu, .backdrop, .tabs .sm { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  .item, .pill, .card, .card .tog, .card .cyc, .step, .progress div, .sidebar, .opt-btn svg { transition: none; }
+  .item, .chip, .pill, .card, .card .tog, .card .cyc, .step, .progress div, .sidebar, .opt-btn svg { transition: none; }
 }
 
 /* ---------- Mobile / petit écran ---------- */
@@ -345,9 +354,8 @@ body.rev .card .tog { left: auto; right: -14px; }
   .brand p { display: none; }
   .menu { display: inline-flex; justify-content: flex-start; white-space: nowrap; order: 1; }
   .opt-wrap { order: 2; }
-  .tabs.fam { order: 3; }
-  .tabs.views { order: 4; }
-  .tabs, .tabs.fam { flex-basis: 100%; width: 100%; }
+  .tabs.views { order: 3; }
+  .tabs { flex-basis: 100%; width: 100%; }
   .tabs .br-tabs__tab { min-height: 40px; padding: var(--space-2); font-size: 14px; }
   .tabs .lg { display: none; }
   .tabs .sm { display: inline; }

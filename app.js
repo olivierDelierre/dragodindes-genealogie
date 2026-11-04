@@ -85,6 +85,10 @@
       }
     }
     listEl.innerHTML = html || '<p style="color:var(--muted)">Aucun résultat.</p>';
+    document.querySelectorAll('#famTabs .chip').forEach(b => {
+      const ms = famMounts.get(b.dataset.fam);
+      b.querySelector('b').textContent = `${ms.filter(m => owned.has(m.id)).length}/${ms.length}`;
+    });
     $('#ownedCount').textContent = `${fam().filter(m => owned.has(m.id)).length}/${fam().length} possédées`;
   }
   listEl.addEventListener('click', e => {
@@ -595,6 +599,7 @@
     tabsState('#viewTabs', 'view', state.view);
     tabsState('#famTabs', 'fam', state.type);
     const f = FAMILIES.find(x => x.id === state.type);
+    $('#menuLabel').textContent = f.label[0].toUpperCase() + f.label.slice(1);
     $('#subtitle').innerHTML = `Généalogie des ${f.label} · ${fam().length} montures · 10 générations · recettes <a href="https://dofuselevage.fr/tools/reproduction/${f.id}/genealogie" target="_blank" rel="noopener">DofusElevage</a>`;
     renderList(); renderDetail(); renderCanvas();
     if (resetScroll) {
