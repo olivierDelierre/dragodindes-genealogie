@@ -558,7 +558,7 @@
           <div class="tip-sub"><span>${TIP_LABEL[m.type]}</span><span class="gbadge">G${m.gen}</span>${fertile ? '<span class="br-badge br-badge--success">Fertile</span>' : ''}</div>
         </div>
       </header>
-      ${stats.length ? `<div class="tip-title">Bonus donnés</div><ul class="tip-stats">${stats.map(statRow).join('')}</ul>` : ''}`;
+      ${stats.length ? `<div class="tip-title">Bonus niveau 200</div><ul class="tip-stats">${stats.map(statRow).join('')}</ul>` : ''}`;
   }
   function placeTip(a) {
     const M = 8, r = a.getBoundingClientRect(), c = tip.getBoundingClientRect();
