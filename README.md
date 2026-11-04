@@ -1,4 +1,4 @@
-# Généalogie des Dragodindes
+# Haras
 
 Double-cliquez sur `index.html` : aucune installation, aucun serveur, tout fonctionne hors ligne.
 
@@ -20,3 +20,15 @@ compte pour un exemplaire. Les étapes cochées sont mémorisées par objectif.
 Sous 760 px de large, la liste des montures devient un tiroir (bouton « ☰ Montures »), l'en-tête est
 compacté et les onglets sont raccourcis. Dans l'arbre et la vue d'ensemble : glisser pour se déplacer,
 pincer à deux doigts pour zoomer.
+
+## Design
+
+L'interface utilise le design system **Brume** : `brume.css` contient les tokens (thèmes clair et sombre) et
+les classes de composants, `style.css` ne contient que les styles propres à l'application et n'utilise aucune
+couleur en dur. Police Nunito chargée depuis Google Fonts (repli sur Helvetica Neue hors ligne).
+
+## Icône
+
+`icon.svg` (tête de dragodinde de face, style Material : aplats et tons superposés) s'adapte au thème du
+navigateur ; dans l'en-tête, la même icône est inlinée et suit le bouton clair/sombre de l'application.
+`icon-32.png` et `apple-touch-icon.png` sont les versions PNG de secours (favicon et écran d'accueil iOS).

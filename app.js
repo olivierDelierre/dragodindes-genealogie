@@ -362,7 +362,7 @@
             <div class="gname">${esc(target.name)} <span class="gbadge">G${target.gen}</span></div>
             ${owned.has(target.id) ? '<div class="lbl">Tu en possèdes déjà une : calcul pour en obtenir en plus.</div>' : ''}
           </div>
-          <label class="qtyin">Quantité <input type="number" id="planQty" min="1" max="50" value="${qty}"></label>
+          <label class="qtyin">Quantité <input class="br-input" type="number" id="planQty" min="1" max="50" value="${qty}"></label>
         </div>
         <div class="tiles">
           <div class="tile"><b>${nCaptures}</b><span>G1 à capturer</span></div>
@@ -372,8 +372,8 @@
         <div class="progress"><div style="width:${pct}%"></div></div>
         <div class="plan-actions">
           <span>${nDone}/${steps.length} étapes faites</span>
-          <button id="planCopy">Copier la liste</button>
-          <button id="planReset">Réinitialiser les coches</button>
+          <button id="planCopy" class="br-btn br-btn--primary br-btn--sm">Copier la liste</button>
+          <button id="planReset" class="br-btn br-btn--ghost br-btn--sm">Réinitialiser les coches</button>
         </div>
       </div>`;
 
@@ -436,6 +436,14 @@
     save(); renderPlan();
   });
 
+  // ---------- Petit « pop » au clic sur un bouton Brume ----------
+  document.addEventListener('click', e => {
+    const b = e.target.closest('.br-btn');
+    if (!b) return;
+    b.classList.remove('is-pop'); void b.offsetWidth; b.classList.add('is-pop');
+  });
+  document.addEventListener('animationend', e => e.target.classList?.remove('is-pop'));
+
   // ---------- Thème clair / sombre ----------
   // Tant que l'utilisatrice n'a pas choisi, on suit le thème du système.
   const systemDark = matchMedia('(prefers-color-scheme: dark)');
@@ -444,7 +452,7 @@
     if (state.theme) document.documentElement.dataset.theme = state.theme;
     else delete document.documentElement.dataset.theme;
     const b = $('#themeBtn');
-    b.textContent = isDark() ? '☀️' : '🌙';
+    b.innerHTML = isDark() ? '☀︎<span class="lg"> Clair</span>' : '☾<span class="lg"> Sombre</span>';
     b.title = isDark() ? 'Passer en thème clair' : 'Passer en thème sombre';
   }
   $('#themeBtn').addEventListener('click', () => { state.theme = isDark() ? 'light' : 'dark'; save(); applyTheme(); });
@@ -505,7 +513,13 @@
     document.body.dataset.view = state.view;
     document.body.classList.toggle('rev', !fwd());
     $('#dirBtn').innerHTML = `<span class="lg">Sens : </span>${fwd() ? 'Parents → Enfant' : 'Enfant ← Parents'}`;
-    document.querySelectorAll('.tabs button').forEach(b => b.classList.toggle('active', b.dataset.view === state.view));
+    const tabs = [...document.querySelectorAll('.tabs button')];
+    tabs.forEach(b => {
+      const on = b.dataset.view === state.view;
+      b.classList.toggle('active', on); b.classList.toggle('is-active', on);
+      b.setAttribute('aria-selected', on);
+    });
+    $('.tabs').style.setProperty('--i', tabs.findIndex(b => b.dataset.view === state.view)); // fait glisser le fond
     renderList(); renderDetail(); renderCanvas();
     if (resetScroll) {
       if (state.view === 'tree') { // on se place sur la cible (à droite ou à gauche selon le sens)
