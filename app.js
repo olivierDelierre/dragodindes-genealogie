@@ -670,7 +670,7 @@
     return `<li><span class="st">${img}<span>${esc(label)}</span></span>${m ? `<b>${(+m[1]).toLocaleString('fr-FR')}${m[2]}</b>` : ''}</li>`;
   }
   function tipHTML(m) {
-    const stats = (m.stats || []).filter(s => s !== 'Fertile');
+    const stats = m.stats || [];
     return `<header>
         <img src="${m.img}" alt="" draggable="false">
         <div>
