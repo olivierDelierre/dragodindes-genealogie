@@ -37,6 +37,28 @@ def db():
     return con
 
 
+def drop_privileges():
+    """En conteneur on démarre en root : on prend la main sur le dossier de la base (volume géré par TrueNAS,
+    souvent propriétaire root), puis on abandonne les droits root avant de servir quoi que ce soit."""
+    if not hasattr(os, 'getuid') or os.getuid() != 0:
+        return
+    uid = int(os.environ.get('HARAS_UID', 568))
+    gid = int(os.environ.get('HARAS_GID', uid))
+    folder = os.path.dirname(os.path.abspath(DB_PATH))
+    try:
+        os.makedirs(folder, exist_ok=True)
+        os.chown(folder, uid, gid)
+        for name in os.listdir(folder):  # base et fichiers WAL existants
+            if name.startswith(os.path.basename(DB_PATH)):
+                os.chown(os.path.join(folder, name), uid, gid)
+    except OSError as e:
+        print(f"Avertissement : chown de {folder} impossible ({e.strerror}).", flush=True)
+    os.setgroups([])
+    os.setgid(gid)
+    os.setuid(uid)
+    print(f'Droits root abandonnés : le serveur tourne en uid={uid} gid={gid}.', flush=True)
+
+
 def check_db_dir():
     """Échoue tôt, avec un message utile, si le dossier de la base n'est pas inscriptible (cas fréquent en Docker)."""
     folder = os.path.dirname(os.path.abspath(DB_PATH))
@@ -273,6 +295,7 @@ def main(argv):
             host = args.pop(0)
         elif a.isdigit():
             port = int(a)
+    drop_privileges()
     init_db()
     httpd = ThreadingHTTPServer((host, port), Handler)
     print(f'Haras : http://{host}:{port}/  (base : {DB_PATH})', flush=True)

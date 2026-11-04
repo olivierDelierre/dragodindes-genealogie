@@ -5,9 +5,8 @@ services:
     image: ghcr.io/olivierdelierre/dragodindes-genealogie:brume
     container_name: haras
     restart: unless-stopped
-    user: "568:568"
     ports:
       - "8765:8765"
     volumes:
-      # Chemin d'un dataset TrueNAS dont l'utilisateur 568 est propriétaire (voir README).
+      # Dataset TrueNAS (ou ixVolume) : le conteneur règle lui-même les droits de /data au démarrage.
       - /mnt/POOL/apps/haras:/data
