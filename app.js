@@ -670,13 +670,12 @@
     return `<li><span class="st">${img}<span>${esc(label)}</span></span>${m ? `<b>${(+m[1]).toLocaleString('fr-FR')}${m[2]}</b>` : ''}</li>`;
   }
   function tipHTML(m) {
-    const fertile = (m.stats || []).includes('Fertile');
     const stats = (m.stats || []).filter(s => s !== 'Fertile');
     return `<header>
         <img src="${m.img}" alt="" draggable="false">
         <div>
           <div class="tip-name">${esc(m.name)}</div>
-          <div class="tip-sub"><span>${TIP_LABEL[m.type]}</span><span class="gbadge">G${m.gen}</span>${fertile ? '<span class="br-badge br-badge--success">Fertile</span>' : ''}</div>
+          <div class="tip-sub"><span>${TIP_LABEL[m.type]}</span><span class="gbadge">G${m.gen}</span></div>
         </div>
       </header>
       ${stats.length ? `<div class="tip-title">Bonus niveau 200</div><ul class="tip-stats">${stats.map(statRow).join('')}</ul>` : ''}`;
