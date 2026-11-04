@@ -219,6 +219,11 @@ class Handler(SimpleHTTPRequestHandler):
                 con.execute('DELETE FROM sessions WHERE token_hash = ?', (hash_token(token),))
             return {'ok': True}
 
+        if route == '/api/users' and method == 'GET':
+            # Liste publique des pseudos : l'écran de connexion propose de choisir son profil.
+            rows = con.execute('SELECT username FROM users ORDER BY username_key').fetchall()
+            return {'users': [r['username'] for r in rows]}
+
         if route == '/api/me' and method == 'GET':
             user = self._user(con)
             owned = [r['mount_id'] for r in con.execute('SELECT mount_id FROM owned WHERE user_id = ?', (user['id'],))]

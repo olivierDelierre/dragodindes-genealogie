@@ -11,9 +11,10 @@ python3 server.py            # http://127.0.0.1:8765/  (option : --host 0.0.0.0,
 Python 3 seul, aucune dépendance. `server.py` sert les fichiers et une petite API JSON ; les comptes et les
 montures possédées sont dans `haras.db` (SQLite, ignoré par git, emplacement réglable avec `HARAS_DB`).
 
-- **Compte** : on crée un compte avec un simple pseudo (pas de mot de passe) et on se reconnecte avec. « Se
-  souvenir de moi » garde la session 90 jours ; sinon elle s'arrête à la fermeture de l'onglet. N'importe qui
-  connaissant un pseudo peut ouvrir ce compte : à réserver à un usage entre amis ou en local.
+- **Compte** : l'écran de connexion liste les comptes existants (on clique sur son profil) et permet d'en créer
+  un avec un simple pseudo, sans mot de passe. « Se souvenir de moi » garde la session 90 jours ; sinon elle
+  s'arrête à la fermeture de l'onglet. La liste des pseudos est visible de tous et n'importe qui peut ouvrir
+  n'importe quel compte : à réserver à un usage entre amis ou en local.
 - Les montures possédées sont enregistrées sur le serveur. À la création du compte, celles déjà cochées en
   local sont reprises. Sans serveur (ouverture de `index.html` en `file://`), l'app reste utilisable en mode
   local : tout est alors dans le `localStorage`.

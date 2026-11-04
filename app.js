@@ -664,10 +664,17 @@
     note.hidden = account.backend;
     note.textContent = account.backend ? '' : 'Mode local : pas de serveur détecté, les montures possédées restent dans ce navigateur. Lance « python3 server.py » pour avoir des comptes.';
   }
-  function openAuth(msg) {
+  async function openAuth(msg) {
     authEl.hidden = false; document.body.classList.add('auth-open');
     authErr.hidden = !msg; authErr.textContent = msg || '';
-    $('#authName').focus();
+    $('#authName').value = '';
+    let users = [];
+    try { users = (await api('/api/users')).users; } catch { /* on propose quand même la création */ }
+    $('#authUsers').hidden = !users.length;
+    $('#authList').innerHTML = users.map(u =>
+      `<button type="button" class="auth-user" data-user="${esc(u)}" role="listitem"><span class="avatar">${esc([...u][0].toUpperCase())}</span><span class="nm">${esc(u)}</span></button>`).join('');
+    $('#authNewLbl').textContent = users.length ? 'Ou crée un nouveau compte (un pseudo suffit, pas de mot de passe) :' : 'Crée ton compte : un pseudo suffit, pas de mot de passe.';
+    (users.length ? authEl.querySelector('.auth-user') : $('#authName')).focus();
   }
   function closeAuth() { authEl.hidden = true; document.body.classList.remove('auth-open'); }
   function enter(res, remember) {
@@ -675,8 +682,8 @@
     account.user = res.username; setOwned(res.owned || []);
     state.owned = []; save(); showAccountUI(); closeAuth(); renderAll(false);
   }
-  async function submitAuth(kind) {
-    const username = $('#authName').value.trim().replace(/\s+/g, ' ');
+  async function submitAuth(kind, name) {
+    const username = (name ?? $('#authName').value).trim().replace(/\s+/g, ' ');
     if (username.length < 2) { authErr.hidden = false; authErr.textContent = 'Entre un pseudo (2 caractères minimum).'; return; }
     const remember = $('#authRemember').checked;
     const btns = authEl.querySelectorAll('button'); btns.forEach(b => { b.disabled = true; });
@@ -685,17 +692,19 @@
       const res = await api('/api/' + kind, 'POST', kind === 'register' ? { username, remember, owned: [...owned] } : { username, remember });
       enter(res, remember);
     } catch (err) {
-      authErr.hidden = false;
-      authErr.textContent = err.status === 404 && kind === 'login' ? 'Aucun compte avec ce pseudo. Clique sur « Créer un compte ».' : err.message;
+      authErr.hidden = false; authErr.textContent = err.message;
+      if (err.status === 404 && kind === 'login') openAuth(err.message); // le profil a disparu : on rafraîchit la liste
     } finally { btns.forEach(b => { b.disabled = false; }); }
   }
-  $('#authForm').addEventListener('submit', e => { e.preventDefault(); submitAuth('login'); });
-  $('#authRegister').addEventListener('click', () => submitAuth('register'));
+  $('#authForm').addEventListener('submit', e => { e.preventDefault(); submitAuth('register'); });
+  $('#authList').addEventListener('click', e => {
+    const b = e.target.closest('[data-user]'); if (b) submitAuth('login', b.dataset.user);
+  });
   async function logout() {
     try { await api('/api/logout', 'POST'); } catch { /* déjà déconnectée côté serveur */ }
     token = null; writeToken(null); account.user = null; owned.clear(); state.owned = [];
     save(); showAccountUI(); renderAll(false);
-    $('#authName').value = ''; openAuth();
+    openAuth();
   }
 
   // Envoi des montures possédées (regroupé : un seul envoi après une série de coches)

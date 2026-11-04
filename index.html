@@ -136,19 +136,22 @@
 </div>
 
 <div id="auth" class="auth" role="dialog" aria-modal="true" aria-labelledby="authTitle" hidden>
-  <form id="authForm" class="auth-card br-glass" autocomplete="off">
+  <div class="auth-card br-glass">
     <h2 id="authTitle">Bienvenue au Haras</h2>
-    <p>Choisis un pseudo pour retrouver tes montures possédées. Pas de mot de passe.</p>
-    <label class="auth-field">Pseudo
-      <input id="authName" class="br-input" type="text" maxlength="30" minlength="2" required autocapitalize="none" spellcheck="false" autocomplete="username">
-    </label>
+    <section id="authUsers" hidden>
+      <p>Qui es-tu ?</p>
+      <div id="authList" class="auth-list" role="list"></div>
+    </section>
+    <form id="authForm" autocomplete="off">
+      <p id="authNewLbl">Crée ton compte : un pseudo suffit, pas de mot de passe.</p>
+      <div class="auth-new">
+        <input id="authName" class="br-input" type="text" maxlength="30" minlength="2" required autocapitalize="none" spellcheck="false" placeholder="Nouveau pseudo" aria-label="Nouveau pseudo">
+        <button type="submit" id="authRegister" class="br-btn br-btn--secondary">Créer</button>
+      </div>
+    </form>
     <label class="chk"><input type="checkbox" id="authRemember" checked> Se souvenir de moi</label>
     <p id="authErr" class="auth-err" role="alert" hidden></p>
-    <div class="auth-actions">
-      <button type="submit" id="authLogin" class="br-btn br-btn--primary">Se connecter</button>
-      <button type="button" id="authRegister" class="br-btn br-btn--secondary">Créer un compte</button>
-    </div>
-  </form>
+  </div>
 </div>
 
 <script src="data.js"></script>
