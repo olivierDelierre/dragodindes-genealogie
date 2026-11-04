@@ -651,9 +651,23 @@
   tip.setAttribute('role', 'tooltip');
   document.body.append(tip);
   let tipTimer = null, tipFor = null;
+  // Icônes des caractéristiques (images/stats). Les dommages élémentaires reprennent l'icône de la caractéristique
+  // de l'élément ; sans icône connue (poussée, retrait…), la ligne garde un emplacement vide pour rester alignée.
+  const STAT_ICON = {
+    'PA': 'actionPoints', 'PM': 'movementPoints', 'Vitalité': 'vitality', 'Critique': 'crit', 'Initiative': 'initiative',
+    'Soins': 'heal', 'Prospection': 'prospecting', 'Portée': 'range', 'Puissance': 'damagesPercent',
+    'Force': 'strength', 'Intelligence': 'intelligence', 'Chance': 'chance', 'Agilité': 'agility',
+    'Fuite': 'escape', 'Tacle': 'tackle', 'Esquive PA': 'dodgeAP', 'Esquive PM': 'dodgeMP',
+    'Dommages Critiques': 'criticalDamage', 'Dommages Poussée': 'damage',
+    'Dommages Terre': 'strength', 'Dommages Feu': 'intelligence', 'Dommages Eau': 'chance', 'Dommages Air': 'agility',
+    'Résistance Terre': 'res_earth', 'Résistance Feu': 'res_fire', 'Résistance Eau': 'res_water', 'Résistance Air': 'res_air',
+    'Invocation': 'summonableCreaturesBoost', 'Invocations': 'summonableCreaturesBoost',
+  };
   function statRow(s) {
     const m = /^(-?\d+)(%?)\s+(.+)$/.exec(s);
-    return m ? `<li><span>${esc(m[3])}</span><b>${(+m[1]).toLocaleString('fr-FR')}${m[2]}</b></li>` : `<li><span>${esc(s)}</span></li>`;
+    const label = m ? m[3] : s, icon = STAT_ICON[label];
+    const img = icon ? `<img class="st-ico" src="images/stats/${icon}.png" alt="" draggable="false">` : '<i class="st-ico"></i>';
+    return `<li><span class="st">${img}<span>${esc(label)}</span></span>${m ? `<b>${(+m[1]).toLocaleString('fr-FR')}${m[2]}</b>` : ''}</li>`;
   }
   function tipHTML(m) {
     const fertile = (m.stats || []).includes('Fertile');
