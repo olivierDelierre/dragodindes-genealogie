@@ -10,7 +10,7 @@ ENV HOST=0.0.0.0 PORT=8765 HARAS_DB=/data/haras.db PYTHONUNBUFFERED=1
 VOLUME /data
 EXPOSE 8765
 
-# 568 = utilisateur « apps » de TrueNAS : il doit avoir le droit d'écrire dans le dataset monté sur /data.
-USER 568:568
+# Démarre en root pour pouvoir donner /data à l'utilisateur 568 (« apps » sur TrueNAS), puis server.py abandonne
+# ses droits root (voir drop_privileges). Utile avec un ixVolume géré par TrueNAS, dont on ne contrôle pas les droits.
 HEALTHCHECK --interval=30s --timeout=3s --retries=3 CMD wget -qO- http://127.0.0.1:8765/ >/dev/null || exit 1
 CMD ["python3", "server.py"]

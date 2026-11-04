@@ -61,8 +61,9 @@ et publiée sur `ghcr.io/olivierdelierre/dragodindes-genealogie` (tags `latest` 
 1. **Rendre l'image récupérable** : sur GitHub, Profil → Packages → `dragodindes-genealogie` → Package settings →
    Change visibility → Public (aucun secret dedans), ou la laisser privée et faire une fois sur le NAS
    `docker login ghcr.io` avec un token « read:packages ».
-2. **Dataset pour la base** : Datasets → créer par ex. `POOL/apps/haras`, puis Edit Permissions → utilisateur et
-   groupe `apps` (uid/gid 568). Il doit être local au NAS (pas un partage réseau : SQLite y est fragile).
+2. **Stockage de la base** : un dataset local au NAS ou un ixVolume géré par TrueNAS, monté sur `/data`. Le
+   conteneur démarre en root, donne `/data` à l'utilisateur 568 puis abandonne ses droits root : aucune
+   permission à régler à la main. Pas de partage réseau (SQLite y est fragile).
 3. **Installer** : Apps → Discover Apps → ⋮ → Install via YAML, coller `docker-compose.yml` en remplaçant `POOL`
    et le tag (`:latest` une fois `brume` fusionnée dans `main`). L'app répond sur `http://IP-DU-NAS:8765/`.
 4. **Mettre à jour** : après un push, attendre la fin de l'action puis, sur l'app, Update (ou
