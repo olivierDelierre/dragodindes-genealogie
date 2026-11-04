@@ -14,7 +14,7 @@
   const STORE_KEY = 'dragodindes-genealogie-v1';
   const AUTH_KEY = 'haras-auth-v1';
   const state = Object.assign(
-    { type: 'dragodinde', selected: null, sel: {}, rc: {}, view: 'tree', depth: 3, zoom: 1, owned: [], onlyOwned: false, planQty: 1, planDone: {}, fwd: true, theme: null },
+    { type: 'dragodinde', selected: null, sel: {}, rc: {}, view: 'tree', depth: 3, zoom: 1, owned: [], onlyOwned: false, planQty: 1, planDone: {}, gauge: { fence: 200000, cur: 0, target: 20000 }, fwd: true, theme: null },
     load()
   );
   // Anciennes sauvegardes (dragodindes seules, ids sans préfixe)
@@ -478,6 +478,113 @@
     save(); renderPlan();
   });
 
+
+  // ---------- Jauge d'enclos : temps pour remplir la jauge d'une monture ----------
+  // Règles (Dofus 3.7) : la jauge d'enclos (0 à 200 000) se vide toutes les 10 s au rythme du palier où elle se trouve,
+  // et chaque monture gagne autant de points que la jauge d'enclos en perd, quel que soit le nombre de montures.
+  // Une jauge de monture (endurance, maturité, amour) va de 0 à 20 000.
+  const TICK = 10, MOUNT_GAUGE_MAX = 20000, FENCE_MAX = 200000;
+  const TIERS = [
+    { n: 1, from: 0, to: 80000, rate: 10 },
+    { n: 2, from: 80000, to: 140000, rate: 20 },
+    { n: 3, from: 140000, to: 180000, rate: 30 },
+    { n: 4, from: 180000, to: 200000, rate: 40 },
+  ];
+  /** Durée pour consommer `need` points en partant d'une jauge d'enclos à `level`, palier par palier (du haut vers le bas). */
+  function drain(level, need) {
+    let remaining = Math.min(need, level), pos = level;
+    const parts = [];
+    for (let i = TIERS.length - 1; i >= 0 && remaining > 0; i--) {
+      const t = TIERS[i];
+      const top = Math.min(pos, t.to);
+      const points = Math.min(remaining, top - t.from);
+      if (points <= 0) continue;
+      parts.push({ tier: t, from: top, to: top - points, points, seconds: points / t.rate * TICK });
+      remaining -= points; pos = top - points;
+    }
+    return { parts, points: parts.reduce((s, p) => s + p.points, 0), seconds: Math.ceil(parts.reduce((s, p) => s + p.seconds, 0)) };
+  }
+  const fmtInt = n => Math.round(n).toLocaleString('fr-FR');
+  function fmtDuration(sec) {
+    sec = Math.round(sec);
+    const h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60;
+    return [h ? `${h} h` : '', (h || m) ? `${String(m).padStart(h ? 2 : 1, '0')} min` : '', !h || s ? `${s} s` : ''].filter(Boolean).join(' ') || '0 s';
+  }
+  const gaugeEl = $('#gauge');
+  const clampInt = (v, max) => Math.min(max, Math.max(0, Math.round(+v) || 0));
+  function renderGauge() {
+    if (!gaugeEl.querySelector('form')) {
+      gaugeEl.innerHTML = `
+        <form class="plan-head gauge-form" autocomplete="off">
+          <div class="gauge-intro">
+            <div class="gname">Temps pour remplir une jauge</div>
+            <div class="lbl">La jauge d'enclos se vide plus vite quand elle est pleine ; la monture gagne autant de points qu'elle en perd.</div>
+          </div>
+          <div class="gauge-fields">
+            <label class="gfield">Jauge d'enclos <span class="lbl">0 à 200 000</span>
+              <input class="br-input" type="number" id="gFence" min="0" max="${FENCE_MAX}" step="1000" inputmode="numeric"></label>
+            <label class="gfield">Jauge de la monture <span class="lbl">actuelle, 0 à 20 000</span>
+              <input class="br-input" type="number" id="gCur" min="0" max="${MOUNT_GAUGE_MAX}" step="100" inputmode="numeric"></label>
+            <label class="gfield">Objectif <span class="lbl">0 à 20 000</span>
+              <input class="br-input" type="number" id="gTarget" min="0" max="${MOUNT_GAUGE_MAX}" step="100" inputmode="numeric"></label>
+          </div>
+          <div class="gauge-presets">
+            <button type="button" class="br-btn br-btn--ghost br-btn--sm" data-gset="fence" data-v="${FENCE_MAX}">Enclos plein</button>
+            <button type="button" class="br-btn br-btn--ghost br-btn--sm" data-gset="cur" data-v="0">Monture à 0</button>
+            <button type="button" class="br-btn br-btn--ghost br-btn--sm" data-gset="target" data-v="${MOUNT_GAUGE_MAX}">Objectif max</button>
+          </div>
+        </form>
+        <div id="gaugeOut"></div>`;
+      const sync = () => {
+        const g = state.gauge;
+        g.fence = clampInt($('#gFence').value, FENCE_MAX); g.cur = clampInt($('#gCur').value, MOUNT_GAUGE_MAX); g.target = clampInt($('#gTarget').value, MOUNT_GAUGE_MAX);
+        save(); renderGaugeOut();
+      };
+      gaugeEl.addEventListener('input', e => { if (e.target.matches('input')) sync(); });
+      gaugeEl.addEventListener('change', e => { if (e.target.matches('input')) { fillGaugeInputs(); } });
+      gaugeEl.addEventListener('click', e => {
+        const b = e.target.closest('[data-gset]'); if (!b) return;
+        state.gauge[b.dataset.gset] = +b.dataset.v; save(); fillGaugeInputs(); renderGaugeOut();
+      });
+    }
+    fillGaugeInputs(); renderGaugeOut();
+  }
+  function fillGaugeInputs() {
+    const g = state.gauge;
+    $('#gFence').value = g.fence; $('#gCur').value = g.cur; $('#gTarget').value = g.target;
+  }
+  function renderGaugeOut() {
+    const g = state.gauge, need = Math.max(0, g.target - g.cur);
+    const r = drain(g.fence, need), full = drain(g.fence, g.fence);
+    const short = need > g.fence;
+    const end = new Date(Date.now() + r.seconds * 1000);
+    const endTxt = end.toLocaleString('fr-FR', { weekday: 'short', hour: '2-digit', minute: '2-digit' });
+    let html = `<div class="plan-head gauge-out">
+      <div class="tiles">
+        <div class="tile"><b>${need ? fmtDuration(r.seconds) : '0 s'}</b><span>pour gagner ${fmtInt(r.points)} points</span></div>
+        <div class="tile"><b>${need ? endTxt : '—'}</b><span>fin estimée si lancé maintenant</span></div>
+        <div class="tile"><b>${fmtDuration(full.seconds)}</b><span>pour vider tout l'enclos (${fmtInt(g.fence)})</span></div>
+      </div>
+      ${short ? `<p class="gauge-warn" role="alert"><strong>Enclos insuffisant :</strong> il ne reste que ${fmtInt(g.fence)} points pour les ${fmtInt(need)} demandés. La monture n'atteindra que ${fmtInt(Math.min(MOUNT_GAUGE_MAX, g.cur + g.fence))}.</p>` : ''}
+      ${g.target <= g.cur ? '<p class="gauge-warn">L\'objectif est déjà atteint : rien à remplir.</p>' : ''}
+    </div>`;
+    if (r.parts.length) {
+      html += `<h3>Détail par palier</h3>`;
+      html += r.parts.map(p => `<div class="step">
+        <span class="gbadge">Palier ${p.tier.n}</span>
+        <span class="qty">${fmtDuration(p.seconds)}</span>
+        <span class="lbl">enclos de ${fmtInt(p.from)} à ${fmtInt(p.to)} · ${fmtInt(p.points)} points à ${p.tier.rate} toutes les ${TICK} s</span>
+      </div>`).join('');
+    }
+    html += `<h3>Les 4 paliers de l'enclos</h3><div class="gauge-tiers">` + TIERS.map(t => {
+      const sec = (t.to - t.from) / t.rate * TICK;
+      return `<div class="tile"><span>Palier ${t.n} · ${fmtInt(t.from)} à ${fmtInt(t.to)}</span><b>${t.rate} / ${TICK} s</b><span>${fmtDuration(sec)} pour le vider</span></div>`;
+    }).join('') + `</div>
+      <p class="hint">Hypothèse : le palier utilisé est celui de la jauge d'enclos à l'instant considéré ; le nombre de montures dans l'enclos ne change pas la vitesse.
+      Source : Dofus pour les Noobs, guide de l'éleveur (paliers de la version 3.7).</p>`;
+    $('#gaugeOut').innerHTML = html;
+  }
+
   // ---------- Petit « pop » au clic sur un bouton Brume ----------
   document.addEventListener('click', e => {
     const b = e.target.closest('.br-btn');
@@ -646,6 +753,7 @@
   // ---------- Rendu global ----------
   function renderCanvas() {
     if (state.view === 'plan') { renderPlan(); return; }
+    if (state.view === 'gauge') { renderGauge(); return; }
     state.view === 'tree' ? renderTree() : renderOverview(); applyZoom();
   }
   function renderAll(resetScroll) {

@@ -146,7 +146,7 @@ body.auth-open .layout, body.auth-open .topbar > :not(.brand) { pointer-events: 
   width: calc((100% - 2 * var(--space-1)) / var(--n, 3)); border-radius: var(--radius-md); }
 .tabs .br-tabs__tab { min-height: 40px; padding: var(--space-2) var(--space-3); font-size: 14px; border-radius: var(--radius-md); }
 
-.tabs.views { order: 2; }
+.tabs.views { order: 2; width: min(100%, 640px); }
 
 /* Écran moyen : engrenage et compte restent à droite de la 1re ligne, les onglets passent dessous */
 @media (max-width: 1100px) {
@@ -259,8 +259,9 @@ input[type="checkbox"] { accent-color: var(--brand); cursor: pointer; }
 .ctrls .br-btn { min-width: 36px; }
 .br-input--sm { min-height: 36px; padding: var(--space-1) var(--space-3); width: auto; font-size: 14px; }
 body[data-view="tree"] .ov-only, body[data-view="overview"] .tree-only { display: none; }
-body[data-view="plan"] .toolbar, body[data-view="plan"] .viewport { display: none; }
-body:not([data-view="plan"]) .plan { display: none; }
+body[data-view="plan"] .toolbar, body[data-view="plan"] .viewport,
+body[data-view="gauge"] .toolbar, body[data-view="gauge"] .viewport, body[data-view="gauge"] .detail { display: none; }
+body:not([data-view="plan"]) .plan, body:not([data-view="gauge"]) .gauge { display: none; }
 
 /* ---------- Canevas (arbre et vue d'ensemble) ---------- */
 .viewport { flex: 1; min-height: 0; overflow: auto; touch-action: pan-x pan-y; overscroll-behavior: contain; position: relative; cursor: grab; }
@@ -313,7 +314,7 @@ body.rev .card .tog { left: auto; right: -14px; }
 .canvas.ov .card.ch { border: 2px solid var(--ch); }
 
 /* ---------- Liste de courses ---------- */
-.plan { flex: 1; overflow-y: auto; padding: var(--space-6); }
+.plan, .gauge { flex: 1; overflow-y: auto; padding: var(--space-6); }
 .plan-head {
   background: var(--surface-raised); border: 1px solid var(--border); border-radius: var(--radius-lg);
   padding: var(--space-6); display: grid; gap: var(--space-4); box-shadow: var(--shadow-sm);
@@ -332,7 +333,7 @@ body.rev .card .tog { left: auto; right: -14px; }
 .progress div { height: 100%; background: var(--brand); border-radius: var(--radius-full); transition: width .3s ease; }
 .plan-actions { display: flex; align-items: center; gap: var(--space-2); font-size: 14px; color: var(--ink-muted); }
 .plan-actions span { flex: 1; }
-.plan h3 {
+.plan h3, .gauge h3 {
   font: 600 12px/18px var(--font-sans); text-transform: uppercase; letter-spacing: .06em; color: var(--ink-muted);
   margin: var(--space-8) 0 var(--space-3); display: flex; align-items: center; gap: var(--space-2);
 }
@@ -350,7 +351,7 @@ body.rev .card .tog { left: auto; right: -14px; }
 .step.done { opacity: .55; }
 .step.done .qty { text-decoration: line-through; }
 .stock { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-.plan .hint, .plan .empty { color: var(--ink-muted); font-size: 13px; margin-top: var(--space-8); }
+.plan .hint, .plan .empty, .gauge .hint { color: var(--ink-muted); font-size: 13px; margin-top: var(--space-8); }
 .plan .empty { font-size: 15px; }
 
 /* Fiche de stats au survol de l'image d'une monture (verre Brume, comme les fiches de dofus-job) */
@@ -370,6 +371,21 @@ body.rev .card .tog { left: auto; right: -14px; }
 .tip-stats li { display: flex; justify-content: space-between; gap: var(--space-3); padding: var(--space-1) 0; border-top: 1px solid var(--border); }
 .tip-stats li:first-child { border-top: 0; }
 .tip-stats b { color: var(--brand); white-space: nowrap; }
+
+/* Jauge d'enclos */
+.gauge-form, .gauge-out { margin-bottom: var(--space-4); }
+.gauge-intro .gname { font: 700 22px/32px var(--font-sans); }
+.gauge-intro .lbl, .gfield .lbl { font-size: 13px; color: var(--ink-muted); font-weight: 400; }
+.gauge-fields { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-4); }
+.gfield { display: grid; gap: var(--space-1); font-weight: 700; font-size: 14px; }
+.gfield input { min-height: 44px; font-size: 16px; }
+.gauge-presets { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.gauge .tile b { font-size: 22px; line-height: 30px; }
+.gauge-warn { margin: 0; color: var(--danger); font-size: 14px; }
+.gauge-tiers { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); }
+.gauge .step { cursor: default; }
+.gauge .step:hover { background: var(--surface-raised); }
+.gauge .step .lbl { font-size: 13px; color: var(--ink-muted); }
 
 /* Éléments réservés au mobile (cachés sur grand écran) */
 .menu, .close-menu, .backdrop, .tabs .sm { display: none; }
@@ -439,7 +455,9 @@ body.rev .card .tog { left: auto; right: -14px; }
   body.rev .card .tog { left: auto; right: -17px; }
 
   /* Liste de courses */
-  .plan { padding: var(--space-3); padding-bottom: max(var(--space-3), env(safe-area-inset-bottom)); }
+  .gauge-fields { grid-template-columns: 1fr; }
+  .gauge-tiers { grid-template-columns: 1fr 1fr; }
+  .plan, .gauge { padding: var(--space-3); padding-bottom: max(var(--space-3), env(safe-area-inset-bottom)); }
   .plan-head { padding: var(--space-4); gap: var(--space-3); }
   .goal .gname { font-size: 18px; line-height: 26px; }
   .qtyin { margin-left: 0; }
